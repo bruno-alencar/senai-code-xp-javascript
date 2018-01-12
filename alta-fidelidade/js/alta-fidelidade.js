@@ -1,6 +1,10 @@
 let products = [{
         name: "Puma Golf Raglan Tech Polo Tee",
-        image: "img/1.jpg",
+        image: {
+            src:"img/1.jpg",
+            alt: "camiseta",
+            title:"camiseta"
+        },
         color: "#8A2BE2",
         size: "XXL",
         price: 72,
@@ -8,7 +12,11 @@ let products = [{
     },
     {
         name: "Nike Men's Running Shoes",
-        image: "img/2.jpg",
+        image: {
+            src:"img/2.jpg",
+            alt: "camiseta",
+            title:"camiseta"
+        },
         color: "#007698",
         size: "XXL",
         price: 129,
@@ -16,7 +24,11 @@ let products = [{
     },
     {
         name: "DC Mens's Axis Snowboard Jacket",
-        image: "img/3.jpg",
+        image: {
+            src:"img/3.jpg",
+            alt: "camiseta",
+            title:"camiseta"
+        },
         color: "#1c376a",
         size: "XXL",
         price: 89,
@@ -49,7 +61,7 @@ function load() {
 
         page += `<tr>
         <tr><td class="align-middle"><span class="delete-item">x</span></td>
-        <td class="align-middle"><div class="box"><img src="${element.image}" alt="" srcset=""class="img-red">                
+        <td class="align-middle"><div class="box"><img src="${element.image.src}" alt="${element.image.alt}" title="${element.image.title}" srcset="" class="img-red">                
         <div class="name-box"><b>${element.name}</b>
         <div class="name-box__ball"> cor: <div class="ball" style="background-color:${element.color}"></div>
         Tamanho: <span class="name-box__size">${element.size}</span></div></div></td>
