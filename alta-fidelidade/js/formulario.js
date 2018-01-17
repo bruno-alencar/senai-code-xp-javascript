@@ -6,11 +6,11 @@ var cliente = {
 function validarFormulario() {
     event.preventDefault();
 
-    if (validarEndereco() && validarContato()) {
-        console.log("Validação OK");
-    } else {
-        console.log("Dados inválidos");
-    }
+    validarContato();
+    // if (validarEndereco() && validarContato())
+    //     console.log("Validação esá ok.. pode prosseguir");
+    // else
+    //     console.log("validação não passou... preencher todos os campos");
 }
 
 function validarEndereco() {
@@ -49,6 +49,18 @@ function validarContato() {
         email: document.getElementById("email").value,
         phone: document.getElementById("phone").value
     }
+
+    var standard = document.getElementById("standard");
+    var ultra = document.getElementById("ultra-speed");
+
+    var package = "";
+
+    if(standard.checked)
+        package = standard.value;
+    else 
+        package = ultra.value;
+        
+    contact.package = package;
 
     if (contact.firstName.trim() == '')
         return false;

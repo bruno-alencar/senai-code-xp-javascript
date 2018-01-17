@@ -25,12 +25,12 @@
                 </li>
             </ul>
         </nav>
-        <form class="form" action=""  method="post">
+        <form class="form" action="" method="post">
             <section class="form-piece">
                 <h2 class="form-piece__title">Shipping
                     <span>address</span>
                 </h2>
-                <select name="Country" class="form-piece__input" id="country" aria-placeholder="Country">
+                <select name="Country" required class="form-piece__input" id="country" aria-placeholder="Country">
                     <option value="0">Brasil</option>
                     <option value="1">Alemanha</option>
                     <option value="2">China</option>
@@ -40,7 +40,7 @@
                     <option value="1">Osasco</option>
                     <option value="2">Santa Isabel (Paraíso)</option>
                 </select>
-                <input class="form-piece__input" type="text" name="state" id="state" placeholder="State / Region / Province">
+                <input class="form-piece__input" required type="text" name="state" id="state" placeholder="State / Region / Province">
                 <input class="form-piece__input" type="text" name="zip-code" id="zip-code" placeholder="Zip Code">
                 <input class="form-piece__input" type="text" name="address1" id="address1" placeholder="Address 1">
                 <input class="form-piece__input" type="text" name="address2" id="address2" placeholder="Address 2">
@@ -54,25 +54,23 @@
                 <input class="form-piece__input" type="email" name="email" id="email" placeholder="E-mail">
                 <input class="form-piece__input" type="tel" name="phone" id="phone" placeholder="Phone">
 
-                <table>
-                    <thead>
-                        Shipping Method
-                    </thead>
-                    <tr>
-                        <td>
-                            <p>$10 Standard</p>
-                            <p>{2-3 weeks}</p>
-                        </td>
-                        <td>
-                            <p>$20 Ultra Speed</p>
-                            <p>{1-3 days}</p>
-                        </td>
-                    </tr>
-                </table>
+                <div>
+                    <input type="radio" id="standard" name="standard" value="standard">
+                    <label for="standard">$10 Standard</label>
+                    <br>
+                    <span>{2-3 weeks}</span>
+                </div>
+                <div>
+                    <input type="radio" id="ultra-speed" name="ultra-speed" value="ultra-speed">
+                    <label for="ultra-speed">$20 Ultra Speed</label>
+                    <br>
+                    <span>{1-3 days}</span>
+                </div>
             </section>
 
+            <button type="submit">Enviar</button>
             <a class="shipping__button" href="" onclick="validarFormulario()">Payment Method</a>
-            
+
         </form>
         <script src="js/formulario.js"></script>
     </main>
