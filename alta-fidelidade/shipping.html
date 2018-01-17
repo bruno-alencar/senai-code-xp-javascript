@@ -8,6 +8,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="css/shipping.css">
     <link rel="stylesheet" href="css/menu.css">
+    <script src="js/formulario.js"></script>
 </head>
 
 <body>
@@ -25,7 +26,7 @@
                 </li>
             </ul>
         </nav>
-        <form class="form" action="" method="post">
+        <form class="form" action="" onclick="validarFormulario()" method="post">
             <section class="form-piece">
                 <h2 class="form-piece__title">Shipping
                     <span>address</span>
@@ -70,9 +71,11 @@
                     </tr>
                 </table>
             </section>
+
+            <a class="shipping__button" href="" onclick="validarFormulario()">Payment Method</a>
+            
         </form>
 
-        <a class="shipping__button" href="#">Payment Method</a>
     </main>
 </body>
 
