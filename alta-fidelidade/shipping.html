@@ -8,7 +8,6 @@
     <title>Document</title>
     <link rel="stylesheet" href="css/shipping.css">
     <link rel="stylesheet" href="css/menu.css">
-    <script src="js/formulario.js"></script>
 </head>
 
 <body>
@@ -26,20 +25,20 @@
                 </li>
             </ul>
         </nav>
-        <form class="form" action="" onclick="validarFormulario()" method="post">
+        <form class="form" action=""  method="post">
             <section class="form-piece">
                 <h2 class="form-piece__title">Shipping
                     <span>address</span>
                 </h2>
-                <select name="Country" class="form-piece__input" id="" aria-placeholder="Country">
-                    <option value="">Brasil</option>
-                    <option value="">Alemanha</option>
-                    <option value="">China</option>
+                <select name="Country" class="form-piece__input" id="country" aria-placeholder="Country">
+                    <option value="0">Brasil</option>
+                    <option value="1">Alemanha</option>
+                    <option value="2">China</option>
                 </select>
-                <select name="City" id="" class="form-piece__input" aria-placeholder="City">
-                    <option value="">Brasil</option>
-                    <option value="">Alemanha</option>
-                    <option value="">China</option>
+                <select name="City" id="city" class="form-piece__input" aria-placeholder="City">
+                    <option value="0">São Paulo</option>
+                    <option value="1">Osasco</option>
+                    <option value="2">Santa Isabel (Paraíso)</option>
                 </select>
                 <input class="form-piece__input" type="text" name="state" id="state" placeholder="State / Region / Province">
                 <input class="form-piece__input" type="text" name="zip-code" id="zip-code" placeholder="Zip Code">
@@ -75,7 +74,7 @@
             <a class="shipping__button" href="" onclick="validarFormulario()">Payment Method</a>
             
         </form>
-
+        <script src="js/formulario.js"></script>
     </main>
 </body>
 

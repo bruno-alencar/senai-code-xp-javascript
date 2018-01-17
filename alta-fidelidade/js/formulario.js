@@ -1,37 +1,65 @@
-var dadosCliente = {
-    endereco: {
-
-    },
-    contato: {
-
-    }
+var cliente = {
+    endereco: {},
+    contato: {}
 };
 
 function validarFormulario() {
-    var objectEndereco = {
-        country: document.getElementById("country").Value,
-        city: document.getElementById("city").Value,
-        state: document.getElementById("state").Value,
-        zipcode: document.getElementById("zip-code").Value,
-        address1: document.getElementById("address1").Value,
-        address2: document.getElementById("address2").Value
-    };
-    
-    var objectContact = {
-        firstName: document.getElementById("first-name").Value,
-        lastName: document.getElementById("last-name").Value,
-        email: document.getElementById("email").Value,
-        phone: document.getElementById("phone").Value
-    }
+    event.preventDefault();
 
-    validarEndereco(objectEndereco);
-    validarContato(objectEndereco);
+    if (validarEndereco() && validarContato()) {
+        console.log("Validação OK");
+    } else {
+        console.log("Dados inválidos");
+    }
 }
 
 function validarEndereco() {
+    var address = {
+        country: document.getElementById("country").value,
+        city: document.getElementById("city").value,
+        state: document.getElementById("state").value,
+        zipcode: document.getElementById("zip-code").value,
+        address1: document.getElementById("address1").value,
+        address2: document.getElementById("address2").value
+    };
 
+    if (address.country != 0 && address.country != '1' && address.country != '0')
+        return false;
+    else if (address.city != '0' && address.city != '1' && address.city != '0')
+        return false;
+    else if (address.state.trim() == '')
+        return false;
+    else if (address.zipcode.trim() == '')
+        return false;
+    else if (address.address1.trim() == '')
+        return false;
+    else if (address.address2.trim() == '')
+        return false;
+    else {
+        cliente.endereco = endereco;
+        return true;
+    }
 }
 
 function validarContato() {
 
+    var contact = {
+        firstName: document.getElementById("first-name").value,
+        lastName: document.getElementById("last-name").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value
+    }
+
+    if (contact.firstName.trim() == '')
+        return false;
+    else if (contact.lastName.trim() == '')
+        return false;
+    else if (contact.email.trim() == '')
+        return false;
+    else if (contact.firphonestName.trim() == '')
+        return false;
+    else {
+        cliente.contato = contact;
+        return true;
+    }
 }
