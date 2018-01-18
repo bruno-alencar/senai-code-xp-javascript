@@ -5,12 +5,11 @@ var cliente = {
 
 function validarFormulario() {
     event.preventDefault();
-
-    validarContato();
-    // if (validarEndereco() && validarContato())
-    //     console.log("Validação esá ok.. pode prosseguir");
-    // else
-    //     console.log("validação não passou... preencher todos os campos");
+    
+    if (validarEndereco() && validarContato())
+        console.log("Validação esá ok.. pode prosseguir");
+    else
+        console.log("validação não passou... preencher todos os campos");
 }
 
 function validarEndereco() {
@@ -59,8 +58,8 @@ function validarContato() {
         package = standard.value;
     else 
         package = ultra.value;
-        
-    contact.package = package;
+
+    contact.package = package;''
 
     if (contact.firstName.trim() == '')
         return false;
