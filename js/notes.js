@@ -10,7 +10,7 @@ var note = {
 var count = 0;
 
 function updateSection(section) {
-    var contentNotes = "";  
+    var contentNotes = "";
 
     notes.forEach(element => {
         if (!element.editing) {
@@ -25,7 +25,7 @@ function updateSection(section) {
             contentNotes += '<form class="note">' +
                 '<input class="note__title" type="text" name="titulo" placeholder="Título" autofocus value="' + element.title + '" />' +
                 '<textarea class="note__body" name="texto" rows="5" placeholder="Criar uma nota...">' + element.content + '</textarea>' +
-                '<button class="note__control" type="button" onclick="createNote(this.form.titulo, this.form.texto, this.form, this.form.nextElementSibling)">Concluído</button>' +
+                '<button class="note__control" type="button" onclick="updateNote(' + element.id + ', this.form.titulo, this.form.texto, this.form.parentElement)">Alterar</button>' +
                 '</form>';
         }
     });
@@ -51,6 +51,15 @@ function createNote(title, content, form, section) {
     updateSection(section);
 
     form.reset();
+}
+
+function updateNote(id, title, content, section) {
+
+    notes[id].title = title.value;
+    notes[id].content = content.value;
+    notes[id].editing = false;
+
+    updateSection(section);
 }
 
 function removeNote(id, section) {
