@@ -14,7 +14,7 @@
             <form class="note">
                 <input class="note__title" type="text" name="titulo" placeholder="Título" autofocus />
                 <textarea class="note__body" name="texto" rows="5" placeholder="Criar uma nota..."></textarea>
-                <button class="note__control" type="button" onclick="adicionarNota(this.form.titulo, this.form.texto, this.form, this.form.nextElementSibling)">
+                <button class="note__control" type="button" onclick="createNote(this.form.titulo, this.form.texto, this.form, this.form.nextElementSibling)">
                     Concluído
                 </button>
             </form>
@@ -22,6 +22,7 @@
             <section class="notes"></section>
         </main>
 
-        <script src="js/scripts.js"></script>
+        <!-- <script src="js/scripts.js"></script> -->
+        <script src="js/notes.js"></script>
     </body>
 </html>
