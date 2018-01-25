@@ -1,0 +1,11 @@
+.menu {}
+
+.menu-items {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.menu-items__step {
+    width: 10%;
+}
