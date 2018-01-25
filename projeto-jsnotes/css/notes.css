@@ -1,0 +1,20 @@
+.menu {
+    display: flex;
+}
+
+.menu-action {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-action__list {
+    display: inline;
+}
+
+.menu-item {
+    list-style: none;
+}
+
+.menu-item__link {
+    text-decoration: none;
+}
