@@ -52,7 +52,21 @@
 
 .notes {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
     margin-top: 2rem;
+}
+
+@keyframes clear{
+    from{
+        transform: scale(1)
+    }
+
+    to{
+        transform: scale(0)
+    }
+}
+
+.animation{
+    animation: clear .5s linear;
 }
