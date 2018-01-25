@@ -53,6 +53,9 @@ function removerNota(posicao, secao) {
     // remover nota da lista de notas
     notas.splice(posicao, 1);
 
+    var close = document.getElementsByClassName('note__control');
+    close.addClass('animation');
+
     // atualizar tela
     atualizarSecao(secao);
 }
