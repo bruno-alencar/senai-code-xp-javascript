@@ -15,7 +15,7 @@ function updateSection(section) {
     notes.forEach(element => {
         if (!element.editing) {
             contentNotes += '<form id="note-'+element.id+'" class="note" onclick="updateForm(' + element.id + ', this.parentElement)">' +
-                '<button class="note__control" type="button" onclick="removeNote(' + element.id + ', this.form.parentElement)">' +
+                '<button class="note__control" type="button" onclick="removeNote(event,' + element.id + ', this.form.parentElement)">' +
                 '<i class="fa fa-times" aria-hidden="true"></i>' +
                 '</button>' +
                 '<h1 class="note__title">' + element.title + '</h1>' +
@@ -29,6 +29,7 @@ function updateSection(section) {
                 '</form>';
         }
     });
+    
     section.innerHTML = contentNotes;
 }
 
@@ -62,11 +63,15 @@ function updateNote(id, title, content, section) {
     updateSection(section);
 }
 
-function removeNote(id, section) {
-    var coco = document.getElementsById('note-' +id);
-    coco.className="note animation";
-
-    notes.splice(id, 1);
+function removeNote(event, id, section) {
+    
+    event.stopPropagation();
+    
+    index = notes.map(function(item) {
+        return item.Id
+    }).indexOf(id);
+    
+    notes.splice(index, 1);
 
     updateSection(section);
 }
