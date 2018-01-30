@@ -1,11 +1,5 @@
 var notes = [];
 
-var note = {
-    id: "",
-    title: "",
-    content: "",
-    editing: true
-};
 
 var count = 0;
 
@@ -61,12 +55,12 @@ function updateNote(id, title, content, section) {
     notes[id].editing = false;
 
     updateSection(section);
-}
+}''
 
 function removeNote(event, id, section) {
     
     event.stopPropagation();
-    
+
     index = notes.map(function(item) {
         return item.Id
     }).indexOf(id);
