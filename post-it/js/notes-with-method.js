@@ -27,6 +27,12 @@ var notesList = {
         this.internList[id].content = newContent;
         this.internList[id].editing = false;
         updateSection(this.section);
+    },
+    get: function (id) {
+        return this.internList[id];
+    },
+    totalCount: function () {
+        return this.internList.length;
     }
 }
 
@@ -54,21 +60,22 @@ function updateSection(section) {
     //     }
     // });
 
-    var notes = notesList.internList;
+    for (let i = 0; i < notesList.totalCount(); i++) {
 
-    for (let i = 0; i < notes.length; i++) {
-        if (!notes[i].editing) {
+        var note = notesList.get(i);
+
+        if (!note.editing) {
             contentNotes += '<form id="note-' + i + '" class="note" onclick="updateForm(' + i + ')">' +
                 '<button class="note__control" type="button" onclick="removeNote(event,' + i + ')">' +
                 '<i class="fa fa-times" aria-hidden="true"></i>' +
                 '</button>' +
-                '<h1 class="note__title">' + notes[i].title + '</h1>' +
-                '<p class="note__body">' + notes[i].content + '</p>' +
+                '<h1 class="note__title">' + note.title + '</h1>' +
+                '<p class="note__body">' + note.content + '</p>' +
                 '</form>';
         } else {
             contentNotes += '<form class="note">' +
-                '<input class="note__title" type="text" name="titulo" placeholder="Título" autofocus value="' + notes[i].title + '" />' +
-                '<textarea class="note__body" name="texto" rows="5" placeholder="Criar uma nota...">' + notes[i].content + '</textarea>' +
+                '<input class="note__title" type="text" name="titulo" placeholder="Título" autofocus value="' + note.title + '" />' +
+                '<textarea class="note__body" name="texto" rows="5" placeholder="Criar uma nota...">' + note.content + '</textarea>' +
                 '<button class="note__control" type="button" onclick="updateNote(' + i + ', this.form.titulo, this.form.texto)">Alterar</button>' +
                 '</form>';
         }
@@ -93,10 +100,14 @@ function updateNote(id, newTitle, newContent) {
 function removeNote(event, id) {
     event.stopPropagation();
 
-    var millisecondsToWait = 1000;
+    var millisecondsToWait = 500;
     setTimeout(function () {
         var item = document.getElementById('note-' + id);
         item.classList.add('animation-test');
-        notesList.delete(id.value);
+
+        setTimeout(function () {
+            notesList.delete(id.value);
+        }, 300);
+
     }, millisecondsToWait);
 }
