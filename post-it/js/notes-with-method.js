@@ -1,5 +1,4 @@
-var notes = [
-];
+var notes = [];
 
 var notesList = {
     section: document.getElementsByClassName("notes")[0],
@@ -12,7 +11,7 @@ var notesList = {
         };
 
         this.internList.push(note);
-        
+
         updateSection(this.section);
     },
     delete: function (id) {
@@ -93,7 +92,11 @@ function updateNote(id, newTitle, newContent) {
 
 function removeNote(event, id) {
     event.stopPropagation();
-    
-    document.getElementById("note-1");
-    notesList.delete(id.value);
+
+    var millisecondsToWait = 1000;
+    setTimeout(function () {
+        var item = document.getElementById('note-' + id);
+        item.classList.add('animation-test');
+        notesList.delete(id.value);
+    }, millisecondsToWait);
 }
