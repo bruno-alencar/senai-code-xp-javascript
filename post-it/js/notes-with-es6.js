@@ -3,7 +3,7 @@ var notes = [];
 var notesList = {
     section: document.getElementsByClassName("notes")[0],
     internList: [],
-    create: function (title, content) {
+    create: (title, content) => {
         var note = {
             title: title,
             content: content,
@@ -11,29 +11,24 @@ var notesList = {
         };
 
         this.internList.push(note);
-
         updateSection(this.section);
     },
-    delete: function (id) {
+    delete: id => {  
         this.internList.splice(id, 1);
         updateSection(this.section);
     },
-    update: function (id) {
+    update: id => {
         this.internList[id].editing = true;
         updateSection(this.section);
     },
-    save: function (id, newTitle, newContent) {
+    save: (id, newTitle, newContent) => {
         this.internList[id].title = newTitle;
         this.internList[id].content = newContent;
         this.internList[id].editing = false;
         updateSection(this.section);
     },
-    get: function (id) {
-        return this.internList[id];
-    },
-    totalCount: function () {
-        return this.internList.length;
-    }
+    get: id => this.internList[id],
+    totalCount: _ => this.internList.length
 }
 
 var count = 0;
