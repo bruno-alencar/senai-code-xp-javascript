@@ -1,0 +1,15 @@
+{
+  "name": "senai-code-xp-javascript",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:bruno-alencar/senai-code-xp-javascript.git",
+  "author": "Bruno Alencar",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1"
+  },
+  "scripts": {
+    "build-post": "babel post-it/js -d post-it/lib"
+  }
+}
