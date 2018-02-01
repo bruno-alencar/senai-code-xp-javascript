@@ -1,7 +1,7 @@
 const notesList = {
     section: document.getElementsByClassName("notes")[0],
     internList: [],
-    create: (title, content) => {
+    create(title, content) {
         var note = {
             title: title,
             content: content,
@@ -11,25 +11,29 @@ const notesList = {
         this.internList.push(note);
         updateSection(this.section);
     },
-    delete: id => {
+    delete(id) {
         this.internList.splice(id, 1);
         updateSection(this.section);
     },
-    update: id => {
+    update(id) {
         this.internList[id].editing = true;
         updateSection(this.section);
     },
-    save: (id, newTitle, newContent) => {
+    save(id, newTitle, newContent) {
         this.internList[id].title = newTitle;
         this.internList[id].content = newContent;
         this.internList[id].editing = false;
         updateSection(this.section);
     },
-    get: id => this.internList[id],
-    totalCount: () => this.internList.length
+    get(id) {
+        this.internList[id]
+    },
+    totalCount() {
+        this.internList.length
+    }
 }
 
-const updateSection = section => {
+function updateSection(section) {
     let contentNotes = "";
 
     for (let i = 0; i < notesList.totalCount(); i++) {
