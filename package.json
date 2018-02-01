@@ -10,6 +10,6 @@
     "babel-preset-env": "^1.6.1"
   },
   "scripts": {
-    "build-post": "babel post-it/js -d post-it/lib"
+    "build-post": "babel post-it/js -d post-it/lib --watch"
   }
 }
