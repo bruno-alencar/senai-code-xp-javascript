@@ -76,13 +76,13 @@
 }
 
 .animation-test {
-    animation-name: example;
-    animation-duration: 1s;
+    animation-name: clear;
+    animation-duration: 4s;
     animation-timing-function: linear;
-    animation-delay: 1s;
-    animation-iteration-count: infinite;
+    animation-delay: 0s;
+    /* animation-iteration-count: infinite; */
     animation-direction: alternate;
 }
 .animation{
-    animation: clear .5s linear;
+    animation: clear .3s linear;
 }
