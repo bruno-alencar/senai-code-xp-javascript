@@ -1,47 +1,56 @@
-class Notes {
-    constructor(section) {
-        this.section = section
-        this.internList = [];
-    }
-
-    create(title, content) {
-        var note = {
-            title: title,
-            content: content,
-            editing: false
-        };
-
-        this.internList.push(note);
-        updateSection(this.section);
-    }
-
-    delete(id) {
-        this.internList.splice(id, 1);
-        updateSection(this.section);
-    }
-
-    update(id) {
-        this.internList[id].editing = true;
-        updateSection(this.section);
-    }
-
-    save(id, newTitle, newContent) {
-        this.internList[id].title = newTitle;
-        this.internList[id].content = newContent;
-        this.internList[id].editing = false;
-        updateSection(this.section);
-    }
-
-    get(id) {
-        this.internList[id]
-    }
-
-    totalCount() {
-        this.internList.length
+class Note {
+    constructor(title, content){
+        this.title = title;
+        this.content = content;
+        this.status = false;
     }
 }
 
-const notesList = new Notes(document.getElementsByClassName("notes")[0]);
+class ListNotes {
+    constructor() {
+        this._section = document.getElementsByClassName("notes")[0];
+        this._internList = [];
+    }
+
+    create(title, content) {
+        // var note = {
+        //     title: title,
+        //     content: content,
+        //     editing: false
+        // };
+        let note = new Note(title, content);
+
+        this._internList.push(note);
+        updateSection(this._section);
+    }
+
+    delete(id) {
+        this._internList.splice(id, 1);
+        updateSection(this._section);
+    }
+
+    update(id) {
+        this._internList[id].editing = true;
+        updateSection(this._section);
+    }
+
+    save(id, newTitle, newContent) {
+        this._internList[id].title = newTitle;
+        this._internList[id].content = newContent;
+        this._internList[id].editing = false;
+        updateSection(this._section);
+    }
+
+    get(id) {
+        return this._internList[id]
+    }
+
+    totalCount() {
+        return this._internList.length
+    }
+}
+
+const notesList = new ListNotes();
 
 // const notesList = {
 //     section: document.getElementsByClassName("notes")[0],
@@ -78,7 +87,7 @@ const notesList = new Notes(document.getElementsByClassName("notes")[0]);
 //     }
 // }
 
-function updateSection(section) {
+const updateSection = section => {
     let contentNotes = "";
 
     for (let i = 0; i < notesList.totalCount(); i++) {
