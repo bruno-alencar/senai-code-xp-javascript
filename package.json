@@ -7,11 +7,13 @@
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
     "webpack": "^3.10.0"
   },
   "scripts": {
     "build-post": "babel post-it/js -d post-it/lib --watch",
-    "start": "webpack --config webpack.config.js"
+    "start": "webpack --config webpack.config.js --watch"
   }
 }
