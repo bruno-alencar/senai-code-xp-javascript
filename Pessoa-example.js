@@ -41,12 +41,12 @@ class Medico extends Pessoa {
 
 
 class Casa{
-    constructor(comodos, valor, alugada, vendedor)
+    constructor(comodos, valor, alugada)
     {
         this._comodos = comodos;
         this._valor = valor;
         this._alugada = alugada;
-        this._vendedor = vendedor;
+        this._vendedor = "Empresa XPTO";
     }
 
     get comodos(){
@@ -83,9 +83,9 @@ class Casa{
 }
 
 class Apartamento extends Casa{
-    constructor(comodos, valor, alugada, vendedor, bloco, andar)
+    constructor(comodos, valor, alugada, bloco, andar)
     {
-        super(comodos, valor, alugada, vendedor);
+        super(comodos, valor, alugada);
         this._bloco = bloco;
         this._andar = andar;
     }
