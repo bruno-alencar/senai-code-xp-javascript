@@ -1,10 +1,11 @@
 import ListNotes from './listNotes.js';
+import FormInput from './components/formInput.js';
 
 const section = document.getElementsByClassName('notes')[0];
 
-const observerList = () => {  
+const observerList = () => {
     updateSection(section);
-}; 
+};
 
 const notesList = new ListNotes(observerList);
 
@@ -16,6 +17,8 @@ const updateSection = section => {
         let note = notesList.get(i);
 
         if (!note.editing) {
+
+
             contentNotes += `<form id="note-${i}" class="note" onclick="updateForm( ${i})">
                 <button class="note__control" type="button" onclick="removeNote(event, ${i})">
                 <i class="fa fa-times" aria-hidden="true"></i>
@@ -24,6 +27,29 @@ const updateSection = section => {
                 <p class="note__body"> ${note.content}</p>
                 </form>`;
         } else {
+
+            let noteForm = document.createElement('form');
+            noteForm.setAttribute('class', 'notes');
+
+            let inputTitle = new FormInput();
+
+            let textArea = document.createElement('textarea');
+            textArea.setAttribute('class', 'note__body');
+            textArea.setAttribute('name', 'texto');
+            textArea.setAttribute('rows', '5');
+            textArea.setAttribute('placeholder', 'Criar uma nota...');
+            // textArea.value = note.content;
+            textArea.innerHTML = note.content;
+
+            let buttonItem = document.createElement('button');
+            buttonItem.setAttribute('class', 'note__control');
+            buttonItem.setAttribute('type', 'button');
+            buttonItem.addEventListener('click', (e) => {
+                updateNote(i, inputTitle, textArea);
+                // updateNote(i, event.target.title, event.target.content);
+            });
+
+
             contentNotes += `<form class="note">
                <input class="note__title" type="text" name="titulo" placeholder="Título" autofocus value=" ${note.title}"/>
                <textarea class="note__body" name="texto" rows="5" placeholder="Criar uma nota..."> ${note.content} </textarea>

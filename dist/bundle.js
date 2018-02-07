@@ -74,6 +74,10 @@ var _listNotes = __webpack_require__(1);
 
 var _listNotes2 = _interopRequireDefault(_listNotes);
 
+var _formInput = __webpack_require__(3);
+
+var _formInput2 = _interopRequireDefault(_formInput);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var section = document.getElementsByClassName('notes')[0];
@@ -87,15 +91,42 @@ var notesList = new _listNotes2.default(observerList);
 var updateSection = function updateSection(section) {
     var contentNotes = "";
 
-    for (var i = 0; i < notesList.totalCount(); i++) {
+    var _loop = function _loop(i) {
 
         var note = notesList.get(i);
 
         if (!note.editing) {
+
             contentNotes += '<form id="note-' + i + '" class="note" onclick="updateForm( ' + i + ')">\n                <button class="note__control" type="button" onclick="removeNote(event, ' + i + ')">\n                <i class="fa fa-times" aria-hidden="true"></i>\n                </button>\n                <h1 class="note__title"> ' + note.title + '</h1>\n                <p class="note__body"> ' + note.content + '</p>\n                </form>';
         } else {
+
+            var noteForm = document.createElement('form');
+            noteForm.setAttribute('class', 'notes');
+
+            var inputTitle = new _formInput2.default();
+
+            var textArea = document.createElement('textarea');
+            textArea.setAttribute('class', 'note__body');
+            textArea.setAttribute('name', 'texto');
+            textArea.setAttribute('rows', '5');
+            textArea.setAttribute('placeholder', 'Criar uma nota...');
+            // textArea.value = note.content;
+            textArea.innerHTML = note.content;
+
+            var buttonItem = document.createElement('button');
+            buttonItem.setAttribute('class', 'note__control');
+            buttonItem.setAttribute('type', 'button');
+            buttonItem.addEventListener('click', function (e) {
+                updateNote(i, inputTitle, textArea);
+                // updateNote(i, event.target.title, event.target.content);
+            });
+
             contentNotes += '<form class="note">\n               <input class="note__title" type="text" name="titulo" placeholder="T\xEDtulo" autofocus value=" ' + note.title + '"/>\n               <textarea class="note__body" name="texto" rows="5" placeholder="Criar uma nota..."> ' + note.content + ' </textarea>\n               <button class="note__control" type="button" onclick="updateNote(' + i + ', this.form.titulo, this.form.texto)">Alterar</button>\n               </form>';
         }
+    };
+
+    for (var i = 0; i < notesList.totalCount(); i++) {
+        _loop(i);
     }
 
     section.innerHTML = contentNotes;
@@ -256,6 +287,29 @@ var Note = function () {
 }();
 
 exports.default = Note;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function FormInput() {
+    var inputTitle = document.createElement('input');
+
+    inputTitle.setAttribute('class', 'note__title');
+    inputTitle.setAttribute('type', 'text');
+    inputTitle.setAttribute('name', 'titulo');
+    inputTitle.setAttribute('placeholder', 'Título');
+    inputTitle.setAttribute('value', note.title);
+    return inputTitle;
+}
+
+exports.default = FormInput;
 
 /***/ })
 /******/ ]);
