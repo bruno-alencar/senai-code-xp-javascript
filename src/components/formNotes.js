@@ -8,13 +8,16 @@ function FormNotes(props) {
     let inputTitle = createTitle(props.note);
     let textArea = createTextArea(props.note);
 
-    let child = props.note.status == true ? 'Alterar' :  '<i class="fa fa-times" aria-hidden="true"></i>'; 
-    let button = createButton(props.note, props.position, child);
+    let child = props.note.editing == true ? 'Alterar' :  '<i class="fa fa-times" aria-hidden="true"></i>'; 
+    let button = createButton(props.note, props.position, child, inputTitle, textArea);
+
+    let children = props.note.editing == true ? [inputTitle, textArea, button] : [button, inputTitle, textArea];
 
     let propsForm = {
-        class: 'notes',
-        event: props.note.status == false ? () => { } : () => updateForm(props.position),
-        children: [inputTitle, textArea, button]
+        id: `note-${props.position}`,
+        class: 'note',
+        event: props.note.editing == true ? () => { } : () => updateForm(props.position),
+        children: children
     }
 
     return new Form(propsForm)
@@ -27,19 +30,19 @@ const createTitle = note => {
         name: 'titulo',
         placeholder: 'Título',
         value:  note.title,
-        readonly: !note.status
+        readonly: !note.editing
     };
 
     return new FormInput(props);
 }
 
-const createButton = (note, position, children) => {
+const createButton = (note, position, children, inputTitle, textArea) => {
 
     const props = {
         class: 'note__control',
         type: 'button',
         children: children,
-        event: note.status ? e => updateNote(position, e.targe.title, e.target.content) : e => removeNote(e, position)
+        event: note.editing == true ? e => updateNote(position, inputTitle, textArea) : e => removeNote(e, position)
     };
     return new FormButton(props);
 }
