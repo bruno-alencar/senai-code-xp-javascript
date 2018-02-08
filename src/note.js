@@ -2,7 +2,7 @@ class Note {
     constructor(title, content) {
         this._title = title;
         this._content = content;
-        this._status = false;
+        this._editing = false;
     }
 
     get title() {
@@ -22,12 +22,12 @@ class Note {
         (content !== null && content.length > 5) ? this._content = content : alert("Content is not valid!");
     }
 
-    get status() {
-        return this._status;
+    get editing() {
+        return this._editing;
     }
     
-    set status(status) {
-        this._status = status;
+    set editing(status) {
+        this._editing = status;
     }
 }
 
