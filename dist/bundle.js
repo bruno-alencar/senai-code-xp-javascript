@@ -78,8 +78,21 @@ var _formInput = __webpack_require__(3);
 
 var _formInput2 = _interopRequireDefault(_formInput);
 
+var _formTextArea = __webpack_require__(4);
+
+var _formTextArea2 = _interopRequireDefault(_formTextArea);
+
+var _formButton = __webpack_require__(5);
+
+var _formButton2 = _interopRequireDefault(_formButton);
+
+var _form = __webpack_require__(6);
+
+var _form2 = _interopRequireDefault(_form);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import FormNotes from './components/formNotes.js';
 var section = document.getElementsByClassName('notes')[0];
 
 var observerList = function observerList() {
@@ -91,45 +104,107 @@ var notesList = new _listNotes2.default(observerList);
 var updateSection = function updateSection(section) {
     var contentNotes = "";
 
+    while (section.firstChild) {
+        section.removeChild(section.firstChild);
+    }
+
     var _loop = function _loop(i) {
 
         var note = notesList.get(i);
+        // const form = new FormNotes({note: note, position: i, updateNote, removeNote, updateForm});
+        var form = void 0;
+        // section.appendChild(form);
+        if (note.editing) {
 
-        if (!note.editing) {
-
-            contentNotes += '<form id="note-' + i + '" class="note" onclick="updateForm( ' + i + ')">\n                <button class="note__control" type="button" onclick="removeNote(event, ' + i + ')">\n                <i class="fa fa-times" aria-hidden="true"></i>\n                </button>\n                <h1 class="note__title"> ' + note.title + '</h1>\n                <p class="note__body"> ' + note.content + '</p>\n                </form>';
-        } else {
-
-            var noteForm = document.createElement('form');
-            noteForm.setAttribute('class', 'notes');
-
-            var inputTitle = new _formInput2.default();
-
-            var textArea = document.createElement('textarea');
-            textArea.setAttribute('class', 'note__body');
-            textArea.setAttribute('name', 'texto');
-            textArea.setAttribute('rows', '5');
-            textArea.setAttribute('placeholder', 'Criar uma nota...');
-            // textArea.value = note.content;
-            textArea.innerHTML = note.content;
-
-            var buttonItem = document.createElement('button');
-            buttonItem.setAttribute('class', 'note__control');
-            buttonItem.setAttribute('type', 'button');
-            buttonItem.addEventListener('click', function (e) {
-                updateNote(i, inputTitle, textArea);
-                // updateNote(i, event.target.title, event.target.content);
+            var inputTitle = new _formInput2.default({
+                class: 'note__title',
+                type: 'text',
+                name: 'titulo',
+                placeholder: 'Título',
+                value: note.title,
+                readonly: !note.editing
             });
 
-            contentNotes += '<form class="note">\n               <input class="note__title" type="text" name="titulo" placeholder="T\xEDtulo" autofocus value=" ' + note.title + '"/>\n               <textarea class="note__body" name="texto" rows="5" placeholder="Criar uma nota..."> ' + note.content + ' </textarea>\n               <button class="note__control" type="button" onclick="updateNote(' + i + ', this.form.titulo, this.form.texto)">Alterar</button>\n               </form>';
+            var textArea = new _formTextArea2.default({
+                class: 'note__body',
+                name: 'texto',
+                rows: 5,
+                placeholder: 'Criar uma nota...',
+                value: note.content
+            });
+
+            var buttonItem = new _formButton2.default({
+                class: 'note__control',
+                type: 'button',
+                children: 'Alterar',
+                event: function event() {
+                    return updateNote(i, inputTitle, textArea);
+                }
+            });
+
+            form = new _form2.default({
+                class: 'note',
+                event: function event() {},
+                children: [inputTitle, textArea, buttonItem]
+            });
+
+            // contentNotes += `<form class="note">
+            //    <input class="note__title" type="text" name="titulo" placeholder="Título" autofocus value=" ${note.title}"/>
+            //    <textarea class="note__body" name="texto" rows="5" placeholder="Criar uma nota..."> ${note.content} </textarea>
+            //    <button class="note__control" type="button" onclick="updateNote(${i}, this.form.titulo, this.form.texto)">Alterar</button>
+            //    </form>`;
+        } else {
+
+            var _buttonItem = new _formButton2.default({
+                class: 'note__control',
+                type: 'button',
+                children: '<i class="fa fa-times" aria-hidden="true"></i>',
+                event: function event(e) {
+                    return removeNote(e, i);
+                }
+            });
+
+            var _inputTitle = new _formInput2.default({
+                class: 'note__title',
+                type: 'text',
+                name: 'titulo',
+                placeholder: 'Título',
+                value: note.title,
+                readonly: !note.editing
+            });
+
+            var _textArea = new _formTextArea2.default({
+                class: 'note__body',
+                name: 'texto',
+                rows: 5,
+                placeholder: 'Criar uma nota...',
+                value: note.content
+            });
+
+            form = new _form2.default({
+                id: 'note-' + i,
+                class: 'note',
+                event: function event() {
+                    return updateForm(i);
+                },
+                children: [_buttonItem, _inputTitle, _textArea]
+            });
+
+            // contentNotes += `<form id="note-${i}" class="note" onclick="updateForm( ${i})">
+            //     <button class="note__control" type="button" onclick="removeNote(event, ${i})">
+            //     <i class="fa fa-times" aria-hidden="true"></i>
+            //     </button>
+            //     <h1 class="note__title"> ${note.title}</h1>
+            //     <p class="note__body"> ${note.content}</p>
+            //     </form>`;
         }
+
+        section.appendChild(form);
     };
 
     for (var i = 0; i < notesList.totalCount(); i++) {
         _loop(i);
     }
-
-    section.innerHTML = contentNotes;
 };
 
 window.updateForm = function (id) {
@@ -154,7 +229,7 @@ window.removeNote = function (event, id) {
         item.classList.add('animation-test');
 
         setTimeout(function () {
-            notesList.splice(id.value);
+            notesList.splice(id);
         }, 300);
     }, millisecondsToWait);
 };
@@ -253,7 +328,7 @@ var Note = function () {
 
         this._title = title;
         this._content = content;
-        this._status = false;
+        this._editing = false;
     }
 
     _createClass(Note, [{
@@ -274,12 +349,12 @@ var Note = function () {
             content !== null && content.length > 5 ? this._content = content : alert("Content is not valid!");
         }
     }, {
-        key: "status",
+        key: "editing",
         get: function get() {
-            return this._status;
+            return this._editing;
         },
         set: function set(status) {
-            this._status = status;
+            this._editing = status;
         }
     }]);
 
@@ -298,18 +373,124 @@ exports.default = Note;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-function FormInput() {
-    var inputTitle = document.createElement('input');
+function FormInput(props) {
+    var input = document.createElement('input');
 
-    inputTitle.setAttribute('class', 'note__title');
-    inputTitle.setAttribute('type', 'text');
-    inputTitle.setAttribute('name', 'titulo');
-    inputTitle.setAttribute('placeholder', 'Título');
-    inputTitle.setAttribute('value', note.title);
-    return inputTitle;
+    input.setAttribute('class', props.class);
+    input.setAttribute('type', props.type);
+    input.setAttribute('name', props.name);
+    input.setAttribute('placeholder', props.placeholder);
+    input.setAttribute('value', props.value);
+
+    if (props.readonly) input.setAttribute('readonly', true);
+
+    return input;
 }
 
+// const propsInput = {
+//     class: 'note__title',
+//     type: 'text',
+//     name: 'titulo',
+//     placeholder: 'Título',
+//     value:  note.title
+// }
+
 exports.default = FormInput;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function FormTextArea(props) {
+    var textArea = document.createElement('textarea');
+
+    textArea.setAttribute('class', props.class);
+    textArea.setAttribute('name', props.name);
+    textArea.setAttribute('rows', props.rows);
+    textArea.setAttribute('placeholder', props.placeholder);
+    // textArea.value = note.content;
+    textArea.innerHTML = props.value;
+
+    return textArea;
+}
+
+// const propsTextArea = {
+//     class: 'note__body',
+//     name: 'texto',
+//     rows: 5,
+//     placeholder: 'Criar uma nota...',
+//     value:  note.content
+// }
+
+exports.default = FormTextArea;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function FormButton(props) {
+    var button = document.createElement('button');
+
+    button.setAttribute('class', props.class);
+    button.setAttribute('type', props.type);
+    button.addEventListener('click', props.event);
+
+    button.innerHTML = props.children;
+
+    return button;
+}
+
+// const propsButton = {
+//     class: 'note__control',
+//     type: 'button',
+//     event: e => {
+//         updateNote(i, inputTitle, textArea);
+//         // updateNote(i, event.target.title, event.target.content);
+//     }
+// }
+
+exports.default = FormButton;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function Form(props) {
+    var form = document.createElement('form');
+
+    form.setAttribute('id', props.id);
+    form.setAttribute('class', props.class);
+    for (var i = 0; i < props.children.length; i++) {
+        form.appendChild(props.children[i]);
+    }
+
+    form.addEventListener('click', props.event);
+    return form;
+}
+
+// const propsForm = {
+//     class: 'notes'
+// }
+
+exports.default = Form;
 
 /***/ })
 /******/ ]);
