@@ -1,12 +1,24 @@
-function FormInput() {
-    let inputTitle = document.createElement('input');
+function FormInput(props) {
+    let input = document.createElement('input');
 
-    inputTitle.setAttribute('class', 'note__title');
-    inputTitle.setAttribute('type', 'text');
-    inputTitle.setAttribute('name', 'titulo');
-    inputTitle.setAttribute('placeholder', 'Título');
-    inputTitle.setAttribute('value', note.title);
-    return inputTitle;
+    input.setAttribute('class', props.class);
+    input.setAttribute('type', props.type);
+    input.setAttribute('name', props.name);
+    input.setAttribute('placeholder', props.placeholder);
+    input.setAttribute('value', props.value);
+
+    if(props.readonly) 
+        input.setAttribute('readonly', true);
+
+    return input;
 }
+
+// const propsInput = {
+//     class: 'note__title',
+//     type: 'text',
+//     name: 'titulo',
+//     placeholder: 'Título',
+//     value:  note.title
+// }
 
 export default FormInput;
