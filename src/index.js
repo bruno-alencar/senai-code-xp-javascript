@@ -16,9 +16,14 @@ const notesList = new ListNotes(observerList);
 const updateSection = section => {
     let contentNotes = "";
 
-    while (section  .firstChild) {
-        section.removeChild(section.firstChild);
-    }
+    // Clean
+    section.innerHTML = '';
+
+    // Before function
+    
+    // while (section  .firstChild) {
+    //     section.removeChild(section.firstChild);
+    // }
 
     for (let i = 0; i < notesList.totalCount(); i++) {
 

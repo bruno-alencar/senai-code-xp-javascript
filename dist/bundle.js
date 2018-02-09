@@ -107,9 +107,14 @@ var notesList = new _listNotes2.default(observerList);
 var updateSection = function updateSection(section) {
     var contentNotes = "";
 
-    while (section.firstChild) {
-        section.removeChild(section.firstChild);
-    }
+    // Clean
+    section.innerHTML = '';
+
+    // Before function
+
+    // while (section  .firstChild) {
+    //     section.removeChild(section.firstChild);
+    // }
 
     for (var i = 0; i < notesList.totalCount(); i++) {
 
