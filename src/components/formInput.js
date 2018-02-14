@@ -1,17 +1,22 @@
-function FormInput(props) {
-    let input = document.createElement('input');
+import React from 'react'
 
-    input.setAttribute('class', props.class);
-    input.setAttribute('type', props.type);
-    input.setAttribute('name', props.name);
-    input.setAttribute('placeholder', props.placeholder);
-    input.setAttribute('value', props.value);
+export default props => React.createElement('input', props);
 
-    if(props.readonly) 
-        input.setAttribute('readonly', true);
 
-    return input;
-}
+// function FormInput(props) {
+//     let input = document.createElement('input');
+
+//     input.setAttribute('class', props.className);
+//     input.setAttribute('type', props.type);
+//     input.setAttribute('name', props.name);
+//     input.setAttribute('placeholder', props.placeholder);
+//     input.setAttribute('value', props.value);
+
+//     if(props.readonly) 
+//         input.setAttribute('readonly', true);
+
+//     return input;
+// }
 
 // const propsInput = {
 //     class: 'note__title',
@@ -21,4 +26,4 @@ function FormInput(props) {
 //     value:  note.title
 // }
 
-export default FormInput;
+// export default FormInput;
