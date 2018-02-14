@@ -1,22 +1,22 @@
-function FormButton(props) {
-    let button = document.createElement('button');
+import React from 'react'
 
-    button.setAttribute('class', props.class);
-    button.setAttribute('type', props.type);
-    button.addEventListener('click', props.event);
+export default (props, children) => React.createElement('button', props, children);
 
-    button.innerHTML = props.children;
 
-    return button;
-}
-
-// const propsButton = {
-//     class: 'note__control',
-//     type: 'button',
-//     event: e => {
-//         updateNote(i, inputTitle, textArea);
-//         // updateNote(i, event.target.title, event.target.content);
-//     }
+// function FormButton(props, children){
+//     return React.createElement('button', props, children);
 // }
 
-export default FormButton;
+// function FormButton(props) {
+//     let button = document.createElement('button');
+
+//     button.setAttribute('class', props.class);
+//     button.setAttribute('type', props.type);
+//     button.addEventListener('click', props.event);
+
+//     button.innerHTML = props.children;
+
+//     return button;
+// }
+
+// export default FormButton;
