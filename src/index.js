@@ -21,7 +21,7 @@ const updateSection = section => {
 
     // Before function
     
-    // while (section  .firstChild) {
+    // while (section.firstChild) {
     //     section.removeChild(section.firstChild);
     // }
 
