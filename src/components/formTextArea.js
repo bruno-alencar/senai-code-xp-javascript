@@ -1,22 +1,26 @@
-function FormTextArea(props){
-    let textArea = document.createElement('textarea');
+import React from 'react'
 
-    textArea.setAttribute('class', props.class);
-    textArea.setAttribute('name', props.name);
-    textArea.setAttribute('rows', props.rows);
-    textArea.setAttribute('placeholder', props.placeholder);
-    // textArea.value = note.content;
-    textArea.innerHTML = props.value;
+export default (props, children) => React.createElement('textarea', props, children);
 
-    return textArea;
-}
+// function FormTextArea(props){
+//     let textArea = document.createElement('textarea');
 
-// const propsTextArea = {
-//     class: 'note__body',
-//     name: 'texto',
-//     rows: 5,
-//     placeholder: 'Criar uma nota...',
-//     value:  note.content
+//     textArea.setAttribute('class', props.className);
+//     textArea.setAttribute('name', props.name);
+//     textArea.setAttribute('rows', props.rows);
+//     textArea.setAttribute('placeholder', props.placeholder);
+//     // textArea.value = note.content;
+//     textArea.innerHTML = props.children;
+
+//     return textArea;
 // }
 
-export default FormTextArea;
+// // const propsTextArea = {
+// //     class: 'note__body',
+// //     name: 'texto',
+// //     rows: 5,
+// //     placeholder: 'Criar uma nota...',
+// //     value:  note.content
+// // }
+
+// export default FormTextArea;
