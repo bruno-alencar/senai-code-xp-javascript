@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default (props, children) => React.createElement('textarea', props, children);
+export default props => React.createElement('textarea', props);
 
 // function FormTextArea(props){
 //     let textArea = document.createElement('textarea');
