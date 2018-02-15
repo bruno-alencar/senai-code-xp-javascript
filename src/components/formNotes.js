@@ -5,22 +5,30 @@ import FormButton from './formButton.js'
 import Form from './form.js'
 import Note from '../note.js'
 
-export default props => {
-    let newNote = new Note(props.note.title, props.note.content, props.note.editing);
+export default ({note, position, updateNote, removeNote, updateForm}) => {
+    let newNote = new Note(note.title, note.content, note.editing);
+    let children;
+    let action;
 
     let inputTitle = createInputTitle(newNote);
     let textArea = createTextArea(newNote);
-    let button = createButton(props.note, props.position, newNote);
+    let button = createButton(newNote, position);
 
-    let children = props.note.editing ? [inputTitle, textArea, button] : [button, inputTitle, textArea];
-
-    const propsForm = {
-        id: `note-${props.position}`,
-        className: 'note',
-        onClick: props.note.editing ? () => {} : () => updateForm(props.position)
+    if (newNote.editing) {
+        children = [inputTitle, textArea, button];
+        action = () => {};
+    } else {
+        children = [button, inputTitle, textArea];
+        action = () => updateForm(position);
     }
 
-    return React.createElement(Form, propsForm, children);
+    const props = {
+        id: `note-${position}`,
+        className: 'note',
+        onClick: action
+    }
+
+    return React.createElement(Form, props, children);
 }
 
 const createInputTitle = newNote => {
@@ -50,26 +58,26 @@ const createTextArea = newNote => {
     return React.createElement(FormTextArea, props);
 }
 
-const createButton = (note, position, newNote) => {
+const createButton = (newNote, position) => {
 
     let children;
-    let clickEvent;
+    let action;
 
-    if (note.editing) {
+    if (newNote.editing) {
         children = 'Alterar';
-        clickEvent = e => updateNote(position, newNote.title, newNote.content);
+        action = e => updateNote(position, newNote.title, newNote.content);
     } else {
         children = React.createElement('i', {
-            className = 'fa fa-times',
+            className: 'fa fa-times',
             'aria-hidden': true
         });
-        clickEvent = e => removeNote(e, position);
+        action = e => removeNote(e, position);
     }
 
     const props = {
         className: 'note__control',
         type: 'button',
-        onClick: clickEvent
+        onClick: action
     };
 
     return React.createElement(FormButton, children);
