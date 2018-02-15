@@ -19,12 +19,6 @@ const updateSection = section => {
     // Clean
     section.innerHTML = '';
 
-    // Before function
-    
-    // while (section.firstChild) {
-    //     section.removeChild(section.firstChild);
-    // }
-
     for (let i = 0; i < notesList.totalCount(); i++) {
 
         let note = notesList.get(i);
