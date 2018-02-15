@@ -1,8 +1,8 @@
 class Note {
-    constructor(title, content) {
+    constructor(title, content, editing = false) {
         this._title = title;
         this._content = content;
-        this._editing = false;
+        this._editing = editing;
     }
 
     get title() {
