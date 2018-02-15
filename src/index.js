@@ -14,8 +14,6 @@ const observerList = () => {
 const notesList = new ListNotes(observerList);
 
 const updateSection = section => {
-    let contentNotes = "";
-
     // Clean
     section.innerHTML = '';
 
