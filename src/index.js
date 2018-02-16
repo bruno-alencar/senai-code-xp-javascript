@@ -1,56 +1,66 @@
 import React from 'react'
-import ListNotes from './listNotes.js';
-import FormNotes from './components/formNotes.js';
-import FormInput from './components/formInput.js';
-import FormTextArea from './components/formTextArea.js';
-import FormButton from './components/formButton.js';
-import Form from './components/form.js';
-import SectionNote from './components/notesSection.js';
+import ReactDOM from 'react-dom'
+import Page from './components/page.js'
 
-const section = document.getElementsByClassName('notes')[0];
-
-const observerList = () => {
-    updateSection(section);
-};
-
-const notesList = new ListNotes(observerList);
-
-const updateSection = section => {
-    // Clean
-    // section.innerHTML = '';
+ReactDOM.render(
+    React.createElement(Page, null),
+    document.getElementById('root')
+)
 
 
-    let props = {notesList, updateNote, removeNote, updateForm};
-    return React.createElement(SectionNote, props);
+// import React from 'react'
+// import ListNotes from './listNotes.js';
+// import FormNotes from './components/formNotes.js';
+// import FormInput from './components/formInput.js';
+// import FormTextArea from './components/formTextArea.js';
+// import FormButton from './components/formButton.js';
+// import Form from './components/form.js';
+// import SectionNote from './components/notesSection.js';
 
-    // for (let i = 0; i < notesList.totalCount(); i++) {
+// const section = document.getElementsByClassName('notes')[0];
 
-    //     let note = notesList.get(i);
-    //     const form = new FormNotes({note: note, position: i, updateNote, removeNote, updateForm});
-    //     section.appendChild(form);
-    // }
-}
+// const observerList = () => {
+//     updateSection(section);
+// };
 
-window.updateForm = id => notesList.update(id);
+// const notesList = new ListNotes(observerList);
 
-window.createNote = (title, content, form) => {
-    notesList.push(title.value, content.value);
-    form.reset();
-}
+// const updateSection = section => {
+//     // Clean
+//     // section.innerHTML = '';
 
-window.updateNote = (id, newTitle, newContent) => notesList.save(id, newTitle.value, newContent.value);
 
-window.removeNote = (event, id) => {
-    event.stopPropagation();
+//     let props = {notesList, updateNote, removeNote, updateForm};
+//     return React.createElement(SectionNote, props);
 
-    var millisecondsToWait = 500;
-    setTimeout(function () {
-        var item = document.getElementById('note-' + id);
-        item.classList.add('animation-test');
+//     // for (let i = 0; i < notesList.totalCount(); i++) {
 
-        setTimeout(function () {
-            notesList.splice(id);
-        }, 300);
+//     //     let note = notesList.get(i);
+//     //     const form = new FormNotes({note: note, position: i, updateNote, removeNote, updateForm});
+//     //     section.appendChild(form);
+//     // }
+// }
 
-    }, millisecondsToWait);
-}
+// window.updateForm = id => notesList.update(id);
+
+// window.createNote = (title, content, form) => {
+//     notesList.push(title.value, content.value);
+//     form.reset();
+// }
+
+// window.updateNote = (id, newTitle, newContent) => notesList.save(id, newTitle.value, newContent.value);
+
+// window.removeNote = (event, id) => {
+//     event.stopPropagation();
+
+//     var millisecondsToWait = 500;
+//     setTimeout(function () {
+//         var item = document.getElementById('note-' + id);
+//         item.classList.add('animation-test');
+
+//         setTimeout(function () {
+//             notesList.splice(id);
+//         }, 300);
+
+//     }, millisecondsToWait);
+// }
