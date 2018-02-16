@@ -9,24 +9,24 @@ class ListNotes {
     push(title, content) {
         let note = new Note(title, content);
         this._internList.push(note);
-        this._observer();
+        this._observer(this);
     }
 
     splice(id) {
         this._internList.splice(id, 1);
-        this._observer();
+        this._observer(this);
     }
 
     update(id) {
         this._internList[id].editing = true;
-        this._observer();
+        this._observer(this);
     }
 
     save(id, newTitle, newContent) {
         this._internList[id].title = newTitle;
         this._internList[id].content = newContent;
         this._internList[id].editing = false;
-        this._observer();
+        this._observer(this);
     }
 
     get(id) {
