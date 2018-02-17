@@ -2,8 +2,8 @@ import React from 'react'
 import Main from './main.js'
 import SectionNotes from './sectionNotes.js'
 import FormNotes from './formNotes.js'
-import Note from './Note.js'
-import ListNotes from './listNotes.js'
+import Note from '../note.js'
+import ListNotes from '../listNotes.js'
 
 // const observerList = () => {
 //     updateSection(section);
@@ -30,7 +30,7 @@ class Page extends React.Component {
 
     render() {
         const props = {
-            className = 'container'
+            className: 'container'
         }
 
         let form = createFormNotes(this.createNote);

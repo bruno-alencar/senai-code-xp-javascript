@@ -561,11 +561,233 @@ module.exports = warning;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */,
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Note = function () {
+    function Note(title, content) {
+        var editing = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+        _classCallCheck(this, Note);
+
+        this._title = title;
+        this._content = content;
+        this._editing = editing;
+    }
+
+    _createClass(Note, [{
+        key: "title",
+        get: function get() {
+            return this._title;
+        },
+        set: function set(title) {
+
+            title !== null && title.length > 5 ? this._title = title : alert("Title is not valid!");
+        }
+    }, {
+        key: "content",
+        get: function get() {
+            return this._content;
+        },
+        set: function set(content) {
+            content !== null && content.length > 5 ? this._content = content : alert("Content is not valid!");
+        }
+    }, {
+        key: "editing",
+        get: function get() {
+            return this._editing;
+        },
+        set: function set(status) {
+            this._editing = status;
+        }
+    }]);
+
+    return Note;
+}();
+
+exports.default = Note;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (props) {
+  return _react2.default.createElement('input', props);
+};
+
+// function FormInput(props) {
+//     let input = document.createElement('input');
+
+//     input.setAttribute('class', props.className);
+//     input.setAttribute('type', props.type);
+//     input.setAttribute('name', props.name);
+//     input.setAttribute('placeholder', props.placeholder);
+//     input.setAttribute('value', props.value);
+
+//     if(props.readonly) 
+//         input.setAttribute('readonly', true);
+
+//     return input;
+// }
+
+// const propsInput = {
+//     class: 'note__title',
+//     type: 'text',
+//     name: 'titulo',
+//     placeholder: 'Título',
+//     value:  note.title
+// }
+
+// export default FormInput;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (props) {
+  return _react2.default.createElement('textarea', props);
+};
+
+// function FormTextArea(props){
+//     let textArea = document.createElement('textarea');
+
+//     textArea.setAttribute('class', props.className);
+//     textArea.setAttribute('name', props.name);
+//     textArea.setAttribute('rows', props.rows);
+//     textArea.setAttribute('placeholder', props.placeholder);
+//     // textArea.value = note.content;
+//     textArea.innerHTML = props.children;
+
+//     return textArea;
+// }
+
+// // const propsTextArea = {
+// //     class: 'note__body',
+// //     name: 'texto',
+// //     rows: 5,
+// //     placeholder: 'Criar uma nota...',
+// //     value:  note.content
+// // }
+
+// export default FormTextArea;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (props, children) {
+  return _react2.default.createElement('button', props, children);
+};
+
+// function FormButton(props, children){
+//     return React.createElement('button', props, children);
+// }
+
+// function FormButton(props) {
+//     let button = document.createElement('button');
+
+//     button.setAttribute('class', props.class);
+//     button.setAttribute('type', props.type);
+//     button.addEventListener('click', props.event);
+
+//     button.innerHTML = props.children;
+
+//     return button;
+// }
+
+// export default FormButton;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (props, children) {
+    return _react2.default.createElement('form', props, children);
+};
+
+// function Form(props){
+//     let form = document.createElement('form');
+
+//     form.setAttribute('id', props.id);
+//     form.setAttribute('class', props.className);
+//     for (let i = 0; i < props.children.length; i++) {
+//         form.appendChild(props.children[i]);
+//     }
+
+//     form.addEventListener('click', props.event);
+//     return form;
+// }
+
+// // const propsForm = {
+// //     class: 'notes'
+// // }
+
+// export default Form;
+
+/***/ }),
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2125,10 +2347,290 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 17 */,
-/* 18 */,
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _note = __webpack_require__(7);
+
+var _note2 = _interopRequireDefault(_note);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ListNotes = function () {
+    function ListNotes(observer) {
+        _classCallCheck(this, ListNotes);
+
+        this._internList = [];
+        this._observer = observer;
+    }
+
+    _createClass(ListNotes, [{
+        key: 'push',
+        value: function push(title, content) {
+            var note = new _note2.default(title, content);
+            this._internList.push(note);
+            this._observer(this);
+        }
+    }, {
+        key: 'splice',
+        value: function splice(id) {
+            this._internList.splice(id, 1);
+            this._observer(this);
+        }
+    }, {
+        key: 'update',
+        value: function update(id) {
+            this._internList[id].editing = true;
+            this._observer(this);
+        }
+    }, {
+        key: 'save',
+        value: function save(id, newTitle, newContent) {
+            this._internList[id].title = newTitle;
+            this._internList[id].content = newContent;
+            this._internList[id].editing = false;
+            this._observer(this);
+        }
+    }, {
+        key: 'get',
+        value: function get(id) {
+            return this._internList[id];
+        }
+    }, {
+        key: 'totalCount',
+        value: function totalCount() {
+            return this._internList.length;
+        }
+    }]);
+
+    return ListNotes;
+}();
+
+exports.default = ListNotes;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _formInput = __webpack_require__(8);
+
+var _formInput2 = _interopRequireDefault(_formInput);
+
+var _formTextArea = __webpack_require__(9);
+
+var _formTextArea2 = _interopRequireDefault(_formTextArea);
+
+var _formButton = __webpack_require__(10);
+
+var _formButton2 = _interopRequireDefault(_formButton);
+
+var _form = __webpack_require__(11);
+
+var _form2 = _interopRequireDefault(_form);
+
+var _note = __webpack_require__(7);
+
+var _note2 = _interopRequireDefault(_note);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (_ref) {
+    var note = _ref.note,
+        position = _ref.position,
+        updateNote = _ref.updateNote,
+        removeNote = _ref.removeNote,
+        updateForm = _ref.updateForm;
+
+    var newNote = new _note2.default(note.title, note.content, note.editing);
+    var children = void 0;
+    var action = void 0;
+
+    var inputTitle = createInputTitle(newNote);
+    var textArea = createTextArea(newNote);
+    var button = createButton(newNote, position);
+
+    if (newNote.editing) {
+        children = [inputTitle, textArea, button];
+        action = function action() {};
+    } else {
+        children = [button, inputTitle, textArea];
+        action = function action() {
+            return updateForm(position);
+        };
+    }
+
+    var props = {
+        id: 'note-' + position,
+        className: 'note',
+        onClick: action
+    };
+
+    return _react2.default.createElement(_form2.default, props, children);
+};
+
+var createInputTitle = function createInputTitle(newNote) {
+    var props = {
+        className: 'note__title',
+        type: 'text',
+        name: 'titulo',
+        placeholder: 'Título',
+        defaultValue: newNote.title,
+        readOnly: !newNote.editing,
+        onChange: function onChange(e) {
+            return newNote.title = e.target.value;
+        }
+    };
+
+    return _react2.default.createElement(_formInput2.default, props);
+};
+
+var createTextArea = function createTextArea(newNote) {
+    var props = {
+        className: 'note__body',
+        name: 'texto',
+        rows: 5,
+        placeholder: 'Criar uma nota...',
+        defaultValue: newNote.content,
+        onChange: function onChange(e) {
+            return newNote.content = e.target.value;
+        }
+    };
+
+    return _react2.default.createElement(_formTextArea2.default, props);
+};
+
+var createButton = function createButton(newNote, position) {
+
+    var children = void 0;
+    var action = void 0;
+
+    if (newNote.editing) {
+        children = 'Alterar';
+        action = function action(e) {
+            return updateNote(position, newNote.title, newNote.content);
+        };
+    } else {
+        children = _react2.default.createElement('i', {
+            className: 'fa fa-times',
+            'aria-hidden': true
+        });
+        action = function action(e) {
+            return removeNote(e, position);
+        };
+    }
+
+    var props = {
+        className: 'note__control',
+        type: 'button',
+        onClick: action
+    };
+
+    return _react2.default.createElement(_formButton2.default, children);
+};
+
+// function FormNotes(props) {
+
+//     let inputTitle = createTitle(props.note);
+//     let textArea = createTextArea(props.note);
+
+//     let child = props.note.editing == true ? 'Alterar' :  '<i class="fa fa-times" aria-hidden="true"></i>';
+//     let button = createButton(props.note, props.position, child, inputTitle, textArea);
+
+//     let children = props.note.editing == true ? [inputTitle, textArea, button] : [button, inputTitle, textArea];
+
+//     let propsForm = {
+//         id: `note-${props.position}`,
+//         className: 'note',
+//         onClick: props.note.editing == true ? () => { } : () => updateForm(props.position),
+//         // children: children
+//     }
+
+//     return new Form(propsForm, children);
+// }
+
+// const createTitle = note => {
+//     const props = {
+//         className: 'note__title',
+//         type: 'text',
+//         name: 'titulo',
+//         placeholder: 'Título',
+//         value:  note.title,
+//         readonly: !note.editing
+//     };
+
+//     return new FormInput(props);
+// }
+
+// const createButton = (note, position, children, inputTitle, textArea) => {
+
+//     const props = {
+//         className: 'note__control',
+//         type: 'button',
+//         // children: children,
+//         onClick: note.editing == true ? e => updateNote(position, inputTitle, textArea) : e => removeNote(e, position)
+//     };
+//     return new FormButton(props, children);
+// }
+
+// const createTextArea = note => {
+//     const props = {
+//         className: 'note__body',
+//         name: 'texto',
+//         rows: 5,
+//         placeholder: 'Criar uma nota...',
+//         // value:  note.content
+//     };
+
+//     return new FormTextArea(props, note.content);
+// }
+
+// export default FormNotes;
+
+/***/ }),
 /* 19 */,
-/* 20 */,
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (props, children) {
+  return _react2.default.createElement('section', props, children);
+};
+
+/***/ }),
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18332,10 +18834,249 @@ module.exports = camelize;
 
 /***/ }),
 /* 36 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-throw new Error("Module build failed: SyntaxError: Unexpected token (33:22)\n\n\u001b[0m \u001b[90m 31 | \u001b[39m    render() {\n \u001b[90m 32 | \u001b[39m        \u001b[36mconst\u001b[39m props \u001b[33m=\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 | \u001b[39m            className \u001b[33m=\u001b[39m \u001b[32m'container'\u001b[39m\n \u001b[90m    | \u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 | \u001b[39m        }\n \u001b[90m 35 | \u001b[39m\n \u001b[90m 36 | \u001b[39m        let form \u001b[33m=\u001b[39m createFormNotes(\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mcreateNote)\u001b[33m;\u001b[39m\u001b[0m\n");
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _main = __webpack_require__(37);
+
+var _main2 = _interopRequireDefault(_main);
+
+var _sectionNotes = __webpack_require__(38);
+
+var _sectionNotes2 = _interopRequireDefault(_sectionNotes);
+
+var _formNotes = __webpack_require__(18);
+
+var _formNotes2 = _interopRequireDefault(_formNotes);
+
+var _note = __webpack_require__(7);
+
+var _note2 = _interopRequireDefault(_note);
+
+var _listNotes = __webpack_require__(17);
+
+var _listNotes2 = _interopRequireDefault(_listNotes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// const observerList = () => {
+//     updateSection(section);
+// };
+// const notesList = new ListNotes(observerList);
+
+var Page = function (_React$Component) {
+    _inherits(Page, _React$Component);
+
+    function Page(props) {
+        _classCallCheck(this, Page);
+
+        // this.updatePage = this.updatePage.bind()
+        var _this = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this, props));
+
+        _this.state = {
+            listNotes: new _listNotes2.default(_this.updatePage)
+        };
+        return _this;
+    }
+
+    _createClass(Page, [{
+        key: 'updatePage',
+        value: function updatePage(newNotesList) {
+            console.log('quem é this', this);
+
+            this.setState({
+                listNotes: newNotesList
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var props = {
+                className: 'container'
+            };
+
+            var form = createFormNotes(this.createNote);
+            var section = createSectionNotes(this.state.notesList, this.updateNote, this.removeNote, this.updateForm);
+
+            var children = [form, section];
+
+            return _react2.default.createElement(_main2.default, props, children);
+        }
+    }, {
+        key: 'updateForm',
+        value: function updateForm(id) {
+            this.state.notesList.update(id);
+        }
+    }, {
+        key: 'createNote',
+        value: function createNote(title, content, form) {
+            this.state.notesList.push(title.value, content.value);
+            form.reset();
+        }
+    }, {
+        key: 'updateNote',
+        value: function updateNote(id, newTitle, newContent) {
+            this.state.notesList.save(id, newTitle.value, newContent.value);
+        }
+    }, {
+        key: 'removeNote',
+        value: function removeNote(event, id) {
+            event.stopPropagation();
+
+            var millisecondsToWait = 500;
+            setTimeout(function () {
+                var item = document.getElementById('note-' + id);
+                item.classList.add('animation-test');
+
+                setTimeout(function () {
+                    this.state.notesList.splice(id);
+                }, 300);
+            }, millisecondsToWait);
+        }
+    }]);
+
+    return Page;
+}(_react2.default.Component);
+
+exports.default = Page;
+
+// export default () => {
+//     const props = {
+//         className = 'container'
+//     }
+
+//     let form = createFormNotes()
+//     let section = createSectionNotes();
+
+//     let children = [form, section]
+
+//     return React.createElement(Main, props, children);
+// }
+
+var createFormNotes = function createFormNotes(createNote) {
+    var props = {
+        note: new Nota('', ''),
+        updateNote: createNote,
+        removeNote: null,
+        updateForm: null
+    };
+
+    return _react2.default.createElement(_formNotes2.default, propsNote);
+};
+
+var createSectionNotes = function createSectionNotes() {
+    return function (_ref) {
+        var notesList = _ref.notesList,
+            updateNote = _ref.updateNote,
+            removeNote = _ref.removeNote,
+            updateForm = _ref.updateForm;
+
+        var props = {
+            notesList: notesList,
+            updateNote: updateNote,
+            removeNote: removeNote,
+            updateForm: updateForm
+        };
+
+        return _react2.default.createElement(_main2.default, props);
+    };
+};
+
+// interactions functions
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function () {
+  return _react2.default.createElement('main', props, children);
+};
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _formNotes = __webpack_require__(18);
+
+var _formNotes2 = _interopRequireDefault(_formNotes);
+
+var _section = __webpack_require__(20);
+
+var _section2 = _interopRequireDefault(_section);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (_ref) {
+    var notesList = _ref.notesList,
+        updateNote = _ref.updateNote,
+        removeNote = _ref.removeNote,
+        updateForm = _ref.updateForm;
+
+    var props = {
+        className: 'notes'
+    };
+
+    var children = notesList.map(function (note, i) {
+        return createFormNotes(note, i);
+    });
+
+    return _react2.default.createElement(_section2.default, props, children);
+};
+
+var createFormNotes = function createFormNotes(note, position) {
+
+    var props = {
+        note: note,
+        position: position,
+        updateNote: updateNote,
+        removeNote: removeNote,
+        updateForm: updateForm
+    };
+
+    return _react2.default.createElement(_formNotes2.default, propsNote, children);
+};
 
 /***/ })
 /******/ ]);
