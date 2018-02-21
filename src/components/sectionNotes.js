@@ -12,9 +12,13 @@ export default ({
         className: 'notes'
     }
 
+    // const children = listaNotas.pegaTodos().map((notaAtual, posicao) => (
+    //     montaFormNotas(posicao, notaAtual, adicionarNota, removerNota, editarFormulario)
+    // ))
+
     let children = notesList.map((note, i) => createFormNotes(note, i));
 
-    return React.createElement(Section, props, children);
+    return <Section {...props}>{children}</Section>
 }
 
 const createFormNotes = (note, position) => {
@@ -27,5 +31,5 @@ const createFormNotes = (note, position) => {
         updateForm: updateForm
     };
 
-    return React.createElement(FormNotes, propsNote, children);
+    return <FormNotes key={position} {...props} />
 }
