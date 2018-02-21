@@ -15,6 +15,11 @@ class Page extends React.Component {
         super(props);
 
         // this.updatePage = this.updatePage.bind()
+        this.updatePage = this.updatePage.bind(this);
+        this.createNote = this.createNote.bind(this);
+        this.updateNote = this.updateNote.bind(this);
+        this.removeNote = this.removeNote.bind(this);
+        this.updateForm = this.updateForm.bind(this);
         this.state = {
             listNotes: new ListNotes(this.updatePage)
         }
@@ -32,13 +37,16 @@ class Page extends React.Component {
         const props = {
             className: 'container'
         }
+        const { state, createNote, updateNote, removeNote, updateForm } = this
+        const { notesList } = state
 
         let form = createFormNotes(this.createNote);
-        let section = createSectionNotes(this.state.notesList, this.updateNote, this.removeNote, this.updateForm);
+        let section = createSectionNotes(this.notesList, this.createNote, this.updateNote, this.removeNote, this.updateForm);
 
-        let children = [form, section]
-
-        return React.createElement(Main, props, children);
+        return <Main {...props}>
+            {form}
+            {section}
+         </Main>
     }
 
     updateForm(id) {
@@ -72,28 +80,15 @@ class Page extends React.Component {
 
 export default Page
 
-// export default () => {
-//     const props = {
-//         className = 'container'
-//     }
-
-//     let form = createFormNotes()
-//     let section = createSectionNotes();
-
-//     let children = [form, section]
-
-//     return React.createElement(Main, props, children);
-// }
-
 const createFormNotes = (createNote) => {
     const props = {
-        note: new Nota('', ''),
+        note: new Note(undefined, '', ''),
         updateNote: createNote,
         removeNote: null,
         updateForm: null,
     };
 
-    return React.createElement(FormNotes, propsNote);
+    return <FormNotes {...props} />;
 }
 
 const createSectionNotes = () => ({
@@ -109,7 +104,7 @@ const createSectionNotes = () => ({
         updateForm
     };
 
-    return React.createElement(Main, props);
+    return <SectionNotes {...props} />
 }
 
 // interactions functions
