@@ -5,8 +5,8 @@ import FormButton from './formButton.js'
 import Form from './form.js'
 import Note from '../note.js'
 
-export default ({note, position, updateNote, removeNote, updateForm}) => {
-    let newNote = new Note(note.title, note.content, note.editing);
+export default ({position, note, updateNote, removeNote, updateForm}) => {
+    let newNote = new Note(note.position, note.title, note.content, note.editing);
     let children;
     let action;
 
@@ -28,7 +28,12 @@ export default ({note, position, updateNote, removeNote, updateForm}) => {
         onClick: action
     }
 
-    return React.createElement(Form, props, children);
+    return <Form {...props}> 
+            {newNote.estaAlterando() && button}
+            {inputTitle}
+            {textArea}
+            {(newNote.estaCadastrando() || newNote.estaAlterando()) && button}
+          </Form>;
 }
 
 const createInputTitle = newNote => {
@@ -42,7 +47,7 @@ const createInputTitle = newNote => {
         onChange: e => newNote.title = e.target.value
     };
 
-    return React.createElement(FormInput, props);
+    return <FormInput {...props}/>;
 }
 
 const createTextArea = newNote => {
@@ -55,23 +60,23 @@ const createTextArea = newNote => {
         onChange: e => newNote.content = e.target.value
     };
 
-    return React.createElement(FormTextArea, props);
+    return <FormTextArea {...props}/>;
 }
 
-const createButton = (newNote, position) => {
+const createButton = (newNote) => {
 
     let children;
     let action;
 
     if (newNote.editing) {
         children = 'Alterar';
-        action = e => updateNote(position, newNote.title, newNote.content);
+        action = e => updateNote(newNote.position, newNote.title, newNote.content);
     } else {
         children = React.createElement('i', {
             className: 'fa fa-times',
             'aria-hidden': true
         });
-        action = e => removeNote(e, position);
+        action = e => removeNote(e, newNote.position);
     }
 
     const props = {
@@ -80,7 +85,7 @@ const createButton = (newNote, position) => {
         onClick: action
     };
 
-    return React.createElement(FormButton, children);
+    return <FormButton {...props}>{children}</FormButton>
 }
 
 
