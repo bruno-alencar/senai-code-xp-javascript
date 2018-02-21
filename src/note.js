@@ -1,5 +1,6 @@
 class Note {
-    constructor(title, content, editing = false) {
+    constructor(position, title, content, editing = false) {
+        this._position = position;
         this._title = title;
         this._content = content;
         this._editing = editing;
@@ -28,6 +29,18 @@ class Note {
     
     set editing(status) {
         this._editing = status;
+    }
+
+    estaCadastrando() {
+        return this._position === undefined;
+    }
+
+    estaVisualizando() {
+        return this._position !== undefined && !this._editing
+    }
+
+    estaAlterando() {
+        return this._position !== undefined && this._editing
     }
 }
 
