@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,9 +71,9 @@
 /* WEBPACK VAR INJECTION */(function(process) {
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(13);
+  module.exports = __webpack_require__(17);
 } else {
-  module.exports = __webpack_require__(14);
+  module.exports = __webpack_require__(18);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
@@ -576,17 +576,33 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Note = function () {
-    function Note(title, content) {
-        var editing = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+    function Note(position, title, content) {
+        var editing = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
         _classCallCheck(this, Note);
 
+        this._position = position;
         this._title = title;
         this._content = content;
         this._editing = editing;
     }
 
     _createClass(Note, [{
+        key: "estaCadastrando",
+        value: function estaCadastrando() {
+            return this._position === undefined;
+        }
+    }, {
+        key: "estaVisualizando",
+        value: function estaVisualizando() {
+            return this._position !== undefined && !this._editing;
+        }
+    }, {
+        key: "estaAlterando",
+        value: function estaAlterando() {
+            return this._position !== undefined && this._editing;
+        }
+    }, {
         key: "title",
         get: function get() {
             return this._title;
@@ -623,132 +639,376 @@ exports.default = Note;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 
-var _react = __webpack_require__(0);
+if (process.env.NODE_ENV !== 'production') {
+  var invariant = __webpack_require__(5);
+  var warning = __webpack_require__(6);
+  var ReactPropTypesSecret = __webpack_require__(19);
+  var loggedTypeFailures = {};
+}
 
-var _react2 = _interopRequireDefault(_react);
+/**
+ * Assert that the values match with the type specs.
+ * Error messages are memorized and will only be shown once.
+ *
+ * @param {object} typeSpecs Map of name to a ReactPropType
+ * @param {object} values Runtime values that need to be type-checked
+ * @param {string} location e.g. "prop", "context", "child context"
+ * @param {string} componentName Name of the component for error messages.
+ * @param {?Function} getStack Returns the component stack.
+ * @private
+ */
+function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
+  if (process.env.NODE_ENV !== 'production') {
+    for (var typeSpecName in typeSpecs) {
+      if (typeSpecs.hasOwnProperty(typeSpecName)) {
+        var error;
+        // Prop type validation may throw. In case they do, we don't want to
+        // fail the render phase where it didn't fail before. So we log it.
+        // After these have been cleaned up, we'll let them throw.
+        try {
+          // This is intentionally an invariant that gets caught. It's the same
+          // behavior as without this statement except with a better message.
+          invariant(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'the `prop-types` package, but received `%s`.', componentName || 'React class', location, typeSpecName, typeof typeSpecs[typeSpecName]);
+          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
+        } catch (ex) {
+          error = ex;
+        }
+        warning(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error);
+        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
+          // Only monitor this failure once because there tends to be a lot of the
+          // same error.
+          loggedTypeFailures[error.message] = true;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+          var stack = getStack ? getStack() : '';
 
-exports.default = function (props) {
-  return _react2.default.createElement('input', props);
-};
+          warning(false, 'Failed %s type: %s%s', location, error.message, stack != null ? stack : '');
+        }
+      }
+    }
+  }
+}
 
-// function FormInput(props) {
-//     let input = document.createElement('input');
+module.exports = checkPropTypes;
 
-//     input.setAttribute('class', props.className);
-//     input.setAttribute('type', props.type);
-//     input.setAttribute('name', props.name);
-//     input.setAttribute('placeholder', props.placeholder);
-//     input.setAttribute('value', props.value);
-
-//     if(props.readonly) 
-//         input.setAttribute('readonly', true);
-
-//     return input;
-// }
-
-// const propsInput = {
-//     class: 'note__title',
-//     type: 'text',
-//     name: 'titulo',
-//     placeholder: 'Título',
-//     value:  note.title
-// }
-
-// export default FormInput;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 
-var _react = __webpack_require__(0);
+var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
-var _react2 = _interopRequireDefault(_react);
+/**
+ * Simple, lightweight module assisting with the detection and context of
+ * Worker. Helps avoid circular dependencies and allows code to reason about
+ * whether or not they are in a Worker, even if they never include the main
+ * `ReactWorker` dependency.
+ */
+var ExecutionEnvironment = {
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+  canUseDOM: canUseDOM,
 
-exports.default = function (props) {
-  return _react2.default.createElement('textarea', props);
+  canUseWorkers: typeof Worker !== 'undefined',
+
+  canUseEventListeners: canUseDOM && !!(window.addEventListener || window.attachEvent),
+
+  canUseViewport: canUseDOM && !!window.screen,
+
+  isInWorker: !canUseDOM // For now, this is true - might change in the future.
+
 };
 
-// function FormTextArea(props){
-//     let textArea = document.createElement('textarea');
-
-//     textArea.setAttribute('class', props.className);
-//     textArea.setAttribute('name', props.name);
-//     textArea.setAttribute('rows', props.rows);
-//     textArea.setAttribute('placeholder', props.placeholder);
-//     // textArea.value = note.content;
-//     textArea.innerHTML = props.children;
-
-//     return textArea;
-// }
-
-// // const propsTextArea = {
-// //     class: 'note__body',
-// //     name: 'texto',
-// //     rows: 5,
-// //     placeholder: 'Criar uma nota...',
-// //     value:  note.content
-// // }
-
-// export default FormTextArea;
+module.exports = ExecutionEnvironment;
 
 /***/ }),
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
 
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @typechecks
+ */
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var emptyFunction = __webpack_require__(2);
 
-var _react = __webpack_require__(0);
+/**
+ * Upstream version of event listener. Does not take into account specific
+ * nature of platform.
+ */
+var EventListener = {
+  /**
+   * Listen to DOM events during the bubble phase.
+   *
+   * @param {DOMEventTarget} target DOM element to register listener on.
+   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
+   * @param {function} callback Callback function.
+   * @return {object} Object with a `remove` method.
+   */
+  listen: function listen(target, eventType, callback) {
+    if (target.addEventListener) {
+      target.addEventListener(eventType, callback, false);
+      return {
+        remove: function remove() {
+          target.removeEventListener(eventType, callback, false);
+        }
+      };
+    } else if (target.attachEvent) {
+      target.attachEvent('on' + eventType, callback);
+      return {
+        remove: function remove() {
+          target.detachEvent('on' + eventType, callback);
+        }
+      };
+    }
+  },
 
-var _react2 = _interopRequireDefault(_react);
+  /**
+   * Listen to DOM events during the capture phase.
+   *
+   * @param {DOMEventTarget} target DOM element to register listener on.
+   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
+   * @param {function} callback Callback function.
+   * @return {object} Object with a `remove` method.
+   */
+  capture: function capture(target, eventType, callback) {
+    if (target.addEventListener) {
+      target.addEventListener(eventType, callback, true);
+      return {
+        remove: function remove() {
+          target.removeEventListener(eventType, callback, true);
+        }
+      };
+    } else {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Attempted to listen to events during the capture phase on a ' + 'browser that does not support the capture phase. Your application ' + 'will not receive some events.');
+      }
+      return {
+        remove: emptyFunction
+      };
+    }
+  },
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (props, children) {
-  return _react2.default.createElement('button', props, children);
+  registerDefault: function registerDefault() {}
 };
 
-// function FormButton(props, children){
-//     return React.createElement('button', props, children);
-// }
-
-// function FormButton(props) {
-//     let button = document.createElement('button');
-
-//     button.setAttribute('class', props.class);
-//     button.setAttribute('type', props.type);
-//     button.addEventListener('click', props.event);
-
-//     button.innerHTML = props.children;
-
-//     return button;
-// }
-
-// export default FormButton;
+module.exports = EventListener;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @typechecks
+ */
+
+/* eslint-disable fb-www/typeof-undefined */
+
+/**
+ * Same as document.activeElement but wraps in a try-catch block. In IE it is
+ * not safe to call document.activeElement if there is nothing focused.
+ *
+ * The activeElement will be null only if the document or document body is not
+ * yet defined.
+ *
+ * @param {?DOMDocument} doc Defaults to current document.
+ * @return {?DOMElement}
+ */
+function getActiveElement(doc) /*?DOMElement*/{
+  doc = doc || (typeof document !== 'undefined' ? document : undefined);
+  if (typeof doc === 'undefined') {
+    return null;
+  }
+  try {
+    return doc.activeElement || doc.body;
+  } catch (e) {
+    return doc.body;
+  }
+}
+
+module.exports = getActiveElement;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @typechecks
+ * 
+ */
+
+/*eslint-disable no-self-compare */
+
+
+
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+/**
+ * inlined Object.is polyfill to avoid requiring consumers ship their own
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
+ */
+function is(x, y) {
+  // SameValue algorithm
+  if (x === y) {
+    // Steps 1-5, 7-10
+    // Steps 6.b-6.e: +0 != -0
+    // Added the nonzero y check to make Flow happy, but it is redundant
+    return x !== 0 || y !== 0 || 1 / x === 1 / y;
+  } else {
+    // Step 6.a: NaN == NaN
+    return x !== x && y !== y;
+  }
+}
+
+/**
+ * Performs equality by iterating through keys on an object and returning false
+ * when any key has values which are not strictly equal between the arguments.
+ * Returns true when the values of all keys are strictly equal.
+ */
+function shallowEqual(objA, objB) {
+  if (is(objA, objB)) {
+    return true;
+  }
+
+  if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
+    return false;
+  }
+
+  var keysA = Object.keys(objA);
+  var keysB = Object.keys(objB);
+
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+
+  // Test for A's keys different from B.
+  for (var i = 0; i < keysA.length; i++) {
+    if (!hasOwnProperty.call(objB, keysA[i]) || !is(objA[keysA[i]], objB[keysA[i]])) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+module.exports = shallowEqual;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * 
+ */
+
+var isTextNode = __webpack_require__(22);
+
+/*eslint-disable no-bitwise */
+
+/**
+ * Checks if a given DOM node contains or is another DOM node.
+ */
+function containsNode(outerNode, innerNode) {
+  if (!outerNode || !innerNode) {
+    return false;
+  } else if (outerNode === innerNode) {
+    return true;
+  } else if (isTextNode(outerNode)) {
+    return false;
+  } else if (isTextNode(innerNode)) {
+    return containsNode(outerNode, innerNode.parentNode);
+  } else if ('contains' in outerNode) {
+    return outerNode.contains(innerNode);
+  } else if (outerNode.compareDocumentPosition) {
+    return !!(outerNode.compareDocumentPosition(innerNode) & 16);
+  } else {
+    return false;
+  }
+}
+
+module.exports = containsNode;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+/**
+ * @param {DOMElement} node input/textarea to focus
+ */
+
+function focusNode(node) {
+  // IE8 can throw "Can't move focus to the control because it is invisible,
+  // not enabled, or of a type that does not accept the focus." for all kinds of
+  // reasons that are too expensive and fragile to test.
+  try {
+    node.focus();
+  } catch (e) {}
+}
+
+module.exports = focusNode;
+
+/***/ }),
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -762,33 +1022,193 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _formInput = __webpack_require__(32);
+
+var _formInput2 = _interopRequireDefault(_formInput);
+
+var _formTextArea = __webpack_require__(33);
+
+var _formTextArea2 = _interopRequireDefault(_formTextArea);
+
+var _formButton = __webpack_require__(34);
+
+var _formButton2 = _interopRequireDefault(_formButton);
+
+var _form = __webpack_require__(35);
+
+var _form2 = _interopRequireDefault(_form);
+
+var _note = __webpack_require__(7);
+
+var _note2 = _interopRequireDefault(_note);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = function (props, children) {
-    return _react2.default.createElement('form', props, children);
+exports.default = function (_ref) {
+    var position = _ref.position,
+        note = _ref.note,
+        updateNote = _ref.updateNote,
+        removeNote = _ref.removeNote,
+        updateForm = _ref.updateForm;
+
+    var newNote = new _note2.default(note.position, note.title, note.content, note.editing);
+    var children = void 0;
+    var action = void 0;
+
+    var inputTitle = createInputTitle(newNote);
+    var textArea = createTextArea(newNote);
+    var button = createButton(newNote, position);
+
+    if (newNote.editing) {
+        children = [inputTitle, textArea, button];
+        action = function action() {};
+    } else {
+        children = [button, inputTitle, textArea];
+        action = function action() {
+            return updateForm(position);
+        };
+    }
+
+    var props = {
+        id: 'note-' + position,
+        className: 'note',
+        onClick: action
+    };
+
+    return _react2.default.createElement(
+        _form2.default,
+        props,
+        newNote.estaAlterando() && button,
+        inputTitle,
+        textArea,
+        (newNote.estaCadastrando() || newNote.estaAlterando()) && button
+    );
 };
 
-// function Form(props){
-//     let form = document.createElement('form');
+var createInputTitle = function createInputTitle(newNote) {
+    var props = {
+        className: 'note__title',
+        type: 'text',
+        name: 'titulo',
+        placeholder: 'Título',
+        defaultValue: newNote.title,
+        readOnly: !newNote.editing,
+        onChange: function onChange(e) {
+            return newNote.title = e.target.value;
+        }
+    };
 
-//     form.setAttribute('id', props.id);
-//     form.setAttribute('class', props.className);
-//     for (let i = 0; i < props.children.length; i++) {
-//         form.appendChild(props.children[i]);
+    return _react2.default.createElement(_formInput2.default, props);
+};
+
+var createTextArea = function createTextArea(newNote) {
+    var props = {
+        className: 'note__body',
+        name: 'texto',
+        rows: 5,
+        placeholder: 'Criar uma nota...',
+        defaultValue: newNote.content,
+        onChange: function onChange(e) {
+            return newNote.content = e.target.value;
+        }
+    };
+
+    return _react2.default.createElement(_formTextArea2.default, props);
+};
+
+var createButton = function createButton(newNote) {
+
+    var children = void 0;
+    var action = void 0;
+
+    if (newNote.editing) {
+        children = 'Alterar';
+        action = function action(e) {
+            return updateNote(newNote.position, newNote.title, newNote.content);
+        };
+    } else {
+        children = _react2.default.createElement('i', {
+            className: 'fa fa-times',
+            'aria-hidden': true
+        });
+        action = function action(e) {
+            return removeNote(e, newNote.position);
+        };
+    }
+
+    var props = {
+        className: 'note__control',
+        type: 'button',
+        onClick: action
+    };
+
+    return _react2.default.createElement(
+        _formButton2.default,
+        props,
+        children
+    );
+};
+
+// function FormNotes(props) {
+
+//     let inputTitle = createTitle(props.note);
+//     let textArea = createTextArea(props.note);
+
+//     let child = props.note.editing == true ? 'Alterar' :  '<i class="fa fa-times" aria-hidden="true"></i>';
+//     let button = createButton(props.note, props.position, child, inputTitle, textArea);
+
+//     let children = props.note.editing == true ? [inputTitle, textArea, button] : [button, inputTitle, textArea];
+
+//     let propsForm = {
+//         id: `note-${props.position}`,
+//         className: 'note',
+//         onClick: props.note.editing == true ? () => { } : () => updateForm(props.position),
+//         // children: children
 //     }
 
-//     form.addEventListener('click', props.event);
-//     return form;
+//     return new Form(propsForm, children);
 // }
 
-// // const propsForm = {
-// //     class: 'notes'
-// // }
+// const createTitle = note => {
+//     const props = {
+//         className: 'note__title',
+//         type: 'text',
+//         name: 'titulo',
+//         placeholder: 'Título',
+//         value:  note.title,
+//         readonly: !note.editing
+//     };
 
-// export default Form;
+//     return new FormInput(props);
+// }
+
+// const createButton = (note, position, children, inputTitle, textArea) => {
+
+//     const props = {
+//         className: 'note__control',
+//         type: 'button',
+//         // children: children,
+//         onClick: note.editing == true ? e => updateNote(position, inputTitle, textArea) : e => removeNote(e, position)
+//     };
+//     return new FormButton(props, children);
+// }
+
+// const createTextArea = note => {
+//     const props = {
+//         className: 'note__body',
+//         name: 'texto',
+//         rows: 5,
+//         placeholder: 'Criar uma nota...',
+//         // value:  note.content
+//     };
+
+//     return new FormTextArea(props, note.content);
+// }
+
+// export default FormNotes;
 
 /***/ }),
-/* 12 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -798,11 +1218,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(27);
+var _reactDom = __webpack_require__(20);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _page = __webpack_require__(36);
+var _page = __webpack_require__(29);
 
 var _page2 = _interopRequireDefault(_page);
 
@@ -810,65 +1230,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _reactDom2.default.render(_react2.default.createElement(_page2.default, null), document.getElementById('root'));
 
-// import React from 'react'
-// import ListNotes from './listNotes.js';
-// import FormNotes from './components/formNotes.js';
-// import FormInput from './components/formInput.js';
-// import FormTextArea from './components/formTextArea.js';
-// import FormButton from './components/formButton.js';
-// import Form from './components/form.js';
-// import SectionNote from './components/notesSection.js';
-
-// const section = document.getElementsByClassName('notes')[0];
-
-// const observerList = () => {
-//     updateSection(section);
-// };
-
-// const notesList = new ListNotes(observerList);
-
-// const updateSection = section => {
-//     // Clean
-//     // section.innerHTML = '';
-
-
-//     let props = {notesList, updateNote, removeNote, updateForm};
-//     return React.createElement(SectionNote, props);
-
-//     // for (let i = 0; i < notesList.totalCount(); i++) {
-
-//     //     let note = notesList.get(i);
-//     //     const form = new FormNotes({note: note, position: i, updateNote, removeNote, updateForm});
-//     //     section.appendChild(form);
-//     // }
-// }
-
-// window.updateForm = id => notesList.update(id);
-
-// window.createNote = (title, content, form) => {
-//     notesList.push(title.value, content.value);
-//     form.reset();
-// }
-
-// window.updateNote = (id, newTitle, newContent) => notesList.save(id, newTitle.value, newContent.value);
-
-// window.removeNote = (event, id) => {
-//     event.stopPropagation();
-
-//     var millisecondsToWait = 500;
-//     setTimeout(function () {
-//         var item = document.getElementById('note-' + id);
-//         item.classList.add('animation-test');
-
-//         setTimeout(function () {
-//             notesList.splice(id);
-//         }, 300);
-
-//     }, millisecondsToWait);
-// }
-
 /***/ }),
-/* 13 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -896,7 +1259,7 @@ isValidElement:K,version:"16.2.0",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_F
 
 
 /***/ }),
-/* 14 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -922,7 +1285,7 @@ var emptyObject = __webpack_require__(4);
 var invariant = __webpack_require__(5);
 var warning = __webpack_require__(6);
 var emptyFunction = __webpack_require__(2);
-var checkPropTypes = __webpack_require__(15);
+var checkPropTypes = __webpack_require__(8);
 
 // TODO: this is special because it gets imported during build.
 
@@ -2261,74 +2624,7 @@ module.exports = react;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-if (process.env.NODE_ENV !== 'production') {
-  var invariant = __webpack_require__(5);
-  var warning = __webpack_require__(6);
-  var ReactPropTypesSecret = __webpack_require__(16);
-  var loggedTypeFailures = {};
-}
-
-/**
- * Assert that the values match with the type specs.
- * Error messages are memorized and will only be shown once.
- *
- * @param {object} typeSpecs Map of name to a ReactPropType
- * @param {object} values Runtime values that need to be type-checked
- * @param {string} location e.g. "prop", "context", "child context"
- * @param {string} componentName Name of the component for error messages.
- * @param {?Function} getStack Returns the component stack.
- * @private
- */
-function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
-  if (process.env.NODE_ENV !== 'production') {
-    for (var typeSpecName in typeSpecs) {
-      if (typeSpecs.hasOwnProperty(typeSpecName)) {
-        var error;
-        // Prop type validation may throw. In case they do, we don't want to
-        // fail the render phase where it didn't fail before. So we log it.
-        // After these have been cleaned up, we'll let them throw.
-        try {
-          // This is intentionally an invariant that gets caught. It's the same
-          // behavior as without this statement except with a better message.
-          invariant(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'the `prop-types` package, but received `%s`.', componentName || 'React class', location, typeSpecName, typeof typeSpecs[typeSpecName]);
-          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
-        } catch (ex) {
-          error = ex;
-        }
-        warning(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error);
-        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
-          // Only monitor this failure once because there tends to be a lot of the
-          // same error.
-          loggedTypeFailures[error.message] = true;
-
-          var stack = getStack ? getStack() : '';
-
-          warning(false, 'Failed %s type: %s%s', location, error.message, stack != null ? stack : '');
-        }
-      }
-    }
-  }
-}
-
-module.exports = checkPropTypes;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-/* 16 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2347,597 +2643,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _note = __webpack_require__(7);
-
-var _note2 = _interopRequireDefault(_note);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ListNotes = function () {
-    function ListNotes(observer) {
-        _classCallCheck(this, ListNotes);
-
-        this._internList = [];
-        this._observer = observer;
-    }
-
-    _createClass(ListNotes, [{
-        key: 'push',
-        value: function push(title, content) {
-            var note = new _note2.default(title, content);
-            this._internList.push(note);
-            this._observer(this);
-        }
-    }, {
-        key: 'splice',
-        value: function splice(id) {
-            this._internList.splice(id, 1);
-            this._observer(this);
-        }
-    }, {
-        key: 'update',
-        value: function update(id) {
-            this._internList[id].editing = true;
-            this._observer(this);
-        }
-    }, {
-        key: 'save',
-        value: function save(id, newTitle, newContent) {
-            this._internList[id].title = newTitle;
-            this._internList[id].content = newContent;
-            this._internList[id].editing = false;
-            this._observer(this);
-        }
-    }, {
-        key: 'get',
-        value: function get(id) {
-            return this._internList[id];
-        }
-    }, {
-        key: 'totalCount',
-        value: function totalCount() {
-            return this._internList.length;
-        }
-    }]);
-
-    return ListNotes;
-}();
-
-exports.default = ListNotes;
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _formInput = __webpack_require__(8);
-
-var _formInput2 = _interopRequireDefault(_formInput);
-
-var _formTextArea = __webpack_require__(9);
-
-var _formTextArea2 = _interopRequireDefault(_formTextArea);
-
-var _formButton = __webpack_require__(10);
-
-var _formButton2 = _interopRequireDefault(_formButton);
-
-var _form = __webpack_require__(11);
-
-var _form2 = _interopRequireDefault(_form);
-
-var _note = __webpack_require__(7);
-
-var _note2 = _interopRequireDefault(_note);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (_ref) {
-    var note = _ref.note,
-        position = _ref.position,
-        updateNote = _ref.updateNote,
-        removeNote = _ref.removeNote,
-        updateForm = _ref.updateForm;
-
-    var newNote = new _note2.default(note.title, note.content, note.editing);
-    var children = void 0;
-    var action = void 0;
-
-    var inputTitle = createInputTitle(newNote);
-    var textArea = createTextArea(newNote);
-    var button = createButton(newNote, position);
-
-    if (newNote.editing) {
-        children = [inputTitle, textArea, button];
-        action = function action() {};
-    } else {
-        children = [button, inputTitle, textArea];
-        action = function action() {
-            return updateForm(position);
-        };
-    }
-
-    var props = {
-        id: 'note-' + position,
-        className: 'note',
-        onClick: action
-    };
-
-    return _react2.default.createElement(_form2.default, props, children);
-};
-
-var createInputTitle = function createInputTitle(newNote) {
-    var props = {
-        className: 'note__title',
-        type: 'text',
-        name: 'titulo',
-        placeholder: 'Título',
-        defaultValue: newNote.title,
-        readOnly: !newNote.editing,
-        onChange: function onChange(e) {
-            return newNote.title = e.target.value;
-        }
-    };
-
-    return _react2.default.createElement(_formInput2.default, props);
-};
-
-var createTextArea = function createTextArea(newNote) {
-    var props = {
-        className: 'note__body',
-        name: 'texto',
-        rows: 5,
-        placeholder: 'Criar uma nota...',
-        defaultValue: newNote.content,
-        onChange: function onChange(e) {
-            return newNote.content = e.target.value;
-        }
-    };
-
-    return _react2.default.createElement(_formTextArea2.default, props);
-};
-
-var createButton = function createButton(newNote, position) {
-
-    var children = void 0;
-    var action = void 0;
-
-    if (newNote.editing) {
-        children = 'Alterar';
-        action = function action(e) {
-            return updateNote(position, newNote.title, newNote.content);
-        };
-    } else {
-        children = _react2.default.createElement('i', {
-            className: 'fa fa-times',
-            'aria-hidden': true
-        });
-        action = function action(e) {
-            return removeNote(e, position);
-        };
-    }
-
-    var props = {
-        className: 'note__control',
-        type: 'button',
-        onClick: action
-    };
-
-    return _react2.default.createElement(_formButton2.default, children);
-};
-
-// function FormNotes(props) {
-
-//     let inputTitle = createTitle(props.note);
-//     let textArea = createTextArea(props.note);
-
-//     let child = props.note.editing == true ? 'Alterar' :  '<i class="fa fa-times" aria-hidden="true"></i>';
-//     let button = createButton(props.note, props.position, child, inputTitle, textArea);
-
-//     let children = props.note.editing == true ? [inputTitle, textArea, button] : [button, inputTitle, textArea];
-
-//     let propsForm = {
-//         id: `note-${props.position}`,
-//         className: 'note',
-//         onClick: props.note.editing == true ? () => { } : () => updateForm(props.position),
-//         // children: children
-//     }
-
-//     return new Form(propsForm, children);
-// }
-
-// const createTitle = note => {
-//     const props = {
-//         className: 'note__title',
-//         type: 'text',
-//         name: 'titulo',
-//         placeholder: 'Título',
-//         value:  note.title,
-//         readonly: !note.editing
-//     };
-
-//     return new FormInput(props);
-// }
-
-// const createButton = (note, position, children, inputTitle, textArea) => {
-
-//     const props = {
-//         className: 'note__control',
-//         type: 'button',
-//         // children: children,
-//         onClick: note.editing == true ? e => updateNote(position, inputTitle, textArea) : e => removeNote(e, position)
-//     };
-//     return new FormButton(props, children);
-// }
-
-// const createTextArea = note => {
-//     const props = {
-//         className: 'note__body',
-//         name: 'texto',
-//         rows: 5,
-//         placeholder: 'Criar uma nota...',
-//         // value:  note.content
-//     };
-
-//     return new FormTextArea(props, note.content);
-// }
-
-// export default FormNotes;
-
-/***/ }),
-/* 19 */,
 /* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (props, children) {
-  return _react2.default.createElement('section', props, children);
-};
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
-
-/**
- * Simple, lightweight module assisting with the detection and context of
- * Worker. Helps avoid circular dependencies and allows code to reason about
- * whether or not they are in a Worker, even if they never include the main
- * `ReactWorker` dependency.
- */
-var ExecutionEnvironment = {
-
-  canUseDOM: canUseDOM,
-
-  canUseWorkers: typeof Worker !== 'undefined',
-
-  canUseEventListeners: canUseDOM && !!(window.addEventListener || window.attachEvent),
-
-  canUseViewport: canUseDOM && !!window.screen,
-
-  isInWorker: !canUseDOM // For now, this is true - might change in the future.
-
-};
-
-module.exports = ExecutionEnvironment;
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @typechecks
- */
-
-var emptyFunction = __webpack_require__(2);
-
-/**
- * Upstream version of event listener. Does not take into account specific
- * nature of platform.
- */
-var EventListener = {
-  /**
-   * Listen to DOM events during the bubble phase.
-   *
-   * @param {DOMEventTarget} target DOM element to register listener on.
-   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
-   * @param {function} callback Callback function.
-   * @return {object} Object with a `remove` method.
-   */
-  listen: function listen(target, eventType, callback) {
-    if (target.addEventListener) {
-      target.addEventListener(eventType, callback, false);
-      return {
-        remove: function remove() {
-          target.removeEventListener(eventType, callback, false);
-        }
-      };
-    } else if (target.attachEvent) {
-      target.attachEvent('on' + eventType, callback);
-      return {
-        remove: function remove() {
-          target.detachEvent('on' + eventType, callback);
-        }
-      };
-    }
-  },
-
-  /**
-   * Listen to DOM events during the capture phase.
-   *
-   * @param {DOMEventTarget} target DOM element to register listener on.
-   * @param {string} eventType Event type, e.g. 'click' or 'mouseover'.
-   * @param {function} callback Callback function.
-   * @return {object} Object with a `remove` method.
-   */
-  capture: function capture(target, eventType, callback) {
-    if (target.addEventListener) {
-      target.addEventListener(eventType, callback, true);
-      return {
-        remove: function remove() {
-          target.removeEventListener(eventType, callback, true);
-        }
-      };
-    } else {
-      if (process.env.NODE_ENV !== 'production') {
-        console.error('Attempted to listen to events during the capture phase on a ' + 'browser that does not support the capture phase. Your application ' + 'will not receive some events.');
-      }
-      return {
-        remove: emptyFunction
-      };
-    }
-  },
-
-  registerDefault: function registerDefault() {}
-};
-
-module.exports = EventListener;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @typechecks
- */
-
-/* eslint-disable fb-www/typeof-undefined */
-
-/**
- * Same as document.activeElement but wraps in a try-catch block. In IE it is
- * not safe to call document.activeElement if there is nothing focused.
- *
- * The activeElement will be null only if the document or document body is not
- * yet defined.
- *
- * @param {?DOMDocument} doc Defaults to current document.
- * @return {?DOMElement}
- */
-function getActiveElement(doc) /*?DOMElement*/{
-  doc = doc || (typeof document !== 'undefined' ? document : undefined);
-  if (typeof doc === 'undefined') {
-    return null;
-  }
-  try {
-    return doc.activeElement || doc.body;
-  } catch (e) {
-    return doc.body;
-  }
-}
-
-module.exports = getActiveElement;
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @typechecks
- * 
- */
-
-/*eslint-disable no-self-compare */
-
-
-
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-/**
- * inlined Object.is polyfill to avoid requiring consumers ship their own
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
- */
-function is(x, y) {
-  // SameValue algorithm
-  if (x === y) {
-    // Steps 1-5, 7-10
-    // Steps 6.b-6.e: +0 != -0
-    // Added the nonzero y check to make Flow happy, but it is redundant
-    return x !== 0 || y !== 0 || 1 / x === 1 / y;
-  } else {
-    // Step 6.a: NaN == NaN
-    return x !== x && y !== y;
-  }
-}
-
-/**
- * Performs equality by iterating through keys on an object and returning false
- * when any key has values which are not strictly equal between the arguments.
- * Returns true when the values of all keys are strictly equal.
- */
-function shallowEqual(objA, objB) {
-  if (is(objA, objB)) {
-    return true;
-  }
-
-  if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
-    return false;
-  }
-
-  var keysA = Object.keys(objA);
-  var keysB = Object.keys(objB);
-
-  if (keysA.length !== keysB.length) {
-    return false;
-  }
-
-  // Test for A's keys different from B.
-  for (var i = 0; i < keysA.length; i++) {
-    if (!hasOwnProperty.call(objB, keysA[i]) || !is(objA[keysA[i]], objB[keysA[i]])) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-module.exports = shallowEqual;
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
-
-var isTextNode = __webpack_require__(29);
-
-/*eslint-disable no-bitwise */
-
-/**
- * Checks if a given DOM node contains or is another DOM node.
- */
-function containsNode(outerNode, innerNode) {
-  if (!outerNode || !innerNode) {
-    return false;
-  } else if (outerNode === innerNode) {
-    return true;
-  } else if (isTextNode(outerNode)) {
-    return false;
-  } else if (isTextNode(innerNode)) {
-    return containsNode(outerNode, innerNode.parentNode);
-  } else if ('contains' in outerNode) {
-    return outerNode.contains(innerNode);
-  } else if (outerNode.compareDocumentPosition) {
-    return !!(outerNode.compareDocumentPosition(innerNode) & 16);
-  } else {
-    return false;
-  }
-}
-
-module.exports = containsNode;
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-/**
- * @param {DOMElement} node input/textarea to focus
- */
-
-function focusNode(node) {
-  // IE8 can throw "Can't move focus to the control because it is invisible,
-  // not enabled, or of a type that does not accept the focus." for all kinds of
-  // reasons that are too expensive and fragile to test.
-  try {
-    node.focus();
-  } catch (e) {}
-}
-
-module.exports = focusNode;
-
-/***/ }),
-/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2975,15 +2681,15 @@ if (process.env.NODE_ENV === 'production') {
   // DCE check should happen before ReactDOM bundle executes so that
   // DevTools can report bad minification during injection.
   checkDCE();
-  module.exports = __webpack_require__(28);
+  module.exports = __webpack_require__(21);
 } else {
-  module.exports = __webpack_require__(31);
+  module.exports = __webpack_require__(24);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 28 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2999,7 +2705,7 @@ if (process.env.NODE_ENV === 'production') {
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(0),l=__webpack_require__(21),B=__webpack_require__(3),C=__webpack_require__(2),ba=__webpack_require__(22),da=__webpack_require__(23),ea=__webpack_require__(24),fa=__webpack_require__(25),ia=__webpack_require__(26),D=__webpack_require__(4);
+var aa=__webpack_require__(0),l=__webpack_require__(9),B=__webpack_require__(3),C=__webpack_require__(2),ba=__webpack_require__(10),da=__webpack_require__(11),ea=__webpack_require__(12),fa=__webpack_require__(13),ia=__webpack_require__(14),D=__webpack_require__(4);
 function E(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:E("227");
 var oa={children:!0,dangerouslySetInnerHTML:!0,defaultValue:!0,defaultChecked:!0,innerHTML:!0,suppressContentEditableWarning:!0,suppressHydrationWarning:!0,style:!0};function pa(a,b){return(a&b)===b}
 var ta={MUST_USE_PROPERTY:1,HAS_BOOLEAN_VALUE:4,HAS_NUMERIC_VALUE:8,HAS_POSITIVE_NUMERIC_VALUE:24,HAS_OVERLOADED_BOOLEAN_VALUE:32,HAS_STRING_BOOLEAN_VALUE:64,injectDOMPropertyConfig:function(a){var b=ta,c=a.Properties||{},d=a.DOMAttributeNamespaces||{},e=a.DOMAttributeNames||{};a=a.DOMMutationMethods||{};for(var f in c){ua.hasOwnProperty(f)?E("48",f):void 0;var g=f.toLowerCase(),h=c[f];g={attributeName:g,attributeNamespace:null,propertyName:f,mutationMethod:null,mustUseProperty:pa(h,b.MUST_USE_PROPERTY),
@@ -3219,7 +2925,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:pb,bundleType:0,version:"16.2.0",r
 
 
 /***/ }),
-/* 29 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3234,7 +2940,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:pb,bundleType:0,version:"16.2.0",r
  * @typechecks
  */
 
-var isNode = __webpack_require__(30);
+var isNode = __webpack_require__(23);
 
 /**
  * @param {*} object The object to check.
@@ -3247,7 +2953,7 @@ function isTextNode(object) {
 module.exports = isTextNode;
 
 /***/ }),
-/* 30 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3275,7 +2981,7 @@ function isNode(object) {
 module.exports = isNode;
 
 /***/ }),
-/* 31 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3299,18 +3005,18 @@ if (process.env.NODE_ENV !== "production") {
 var React = __webpack_require__(0);
 var invariant = __webpack_require__(5);
 var warning = __webpack_require__(6);
-var ExecutionEnvironment = __webpack_require__(21);
+var ExecutionEnvironment = __webpack_require__(9);
 var _assign = __webpack_require__(3);
 var emptyFunction = __webpack_require__(2);
-var EventListener = __webpack_require__(22);
-var getActiveElement = __webpack_require__(23);
-var shallowEqual = __webpack_require__(24);
-var containsNode = __webpack_require__(25);
-var focusNode = __webpack_require__(26);
+var EventListener = __webpack_require__(10);
+var getActiveElement = __webpack_require__(11);
+var shallowEqual = __webpack_require__(12);
+var containsNode = __webpack_require__(13);
+var focusNode = __webpack_require__(14);
 var emptyObject = __webpack_require__(4);
-var checkPropTypes = __webpack_require__(15);
-var hyphenateStyleName = __webpack_require__(32);
-var camelizeStyleName = __webpack_require__(34);
+var checkPropTypes = __webpack_require__(8);
+var hyphenateStyleName = __webpack_require__(25);
+var camelizeStyleName = __webpack_require__(27);
 
 /**
  * WARNING: DO NOT manually require this module.
@@ -18677,7 +18383,7 @@ module.exports = reactDom;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 32 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18692,7 +18398,7 @@ module.exports = reactDom;
 
 
 
-var hyphenate = __webpack_require__(33);
+var hyphenate = __webpack_require__(26);
 
 var msPattern = /^ms-/;
 
@@ -18719,7 +18425,7 @@ function hyphenateStyleName(string) {
 module.exports = hyphenateStyleName;
 
 /***/ }),
-/* 33 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18755,7 +18461,7 @@ function hyphenate(string) {
 module.exports = hyphenate;
 
 /***/ }),
-/* 34 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18770,7 +18476,7 @@ module.exports = hyphenate;
 
 
 
-var camelize = __webpack_require__(35);
+var camelize = __webpack_require__(28);
 
 var msPattern = /^-ms-/;
 
@@ -18798,7 +18504,7 @@ function camelizeStyleName(string) {
 module.exports = camelizeStyleName;
 
 /***/ }),
-/* 35 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18833,7 +18539,7 @@ function camelize(string) {
 module.exports = camelize;
 
 /***/ }),
-/* 36 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18849,15 +18555,15 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _main = __webpack_require__(37);
+var _main = __webpack_require__(30);
 
 var _main2 = _interopRequireDefault(_main);
 
-var _sectionNotes = __webpack_require__(38);
+var _sectionNotes = __webpack_require__(31);
 
 var _sectionNotes2 = _interopRequireDefault(_sectionNotes);
 
-var _formNotes = __webpack_require__(18);
+var _formNotes = __webpack_require__(15);
 
 var _formNotes2 = _interopRequireDefault(_formNotes);
 
@@ -18865,7 +18571,7 @@ var _note = __webpack_require__(7);
 
 var _note2 = _interopRequireDefault(_note);
 
-var _listNotes = __webpack_require__(17);
+var _listNotes = __webpack_require__(37);
 
 var _listNotes2 = _interopRequireDefault(_listNotes);
 
@@ -18891,6 +18597,11 @@ var Page = function (_React$Component) {
         // this.updatePage = this.updatePage.bind()
         var _this = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this, props));
 
+        _this.updatePage = _this.updatePage.bind(_this);
+        _this.createNote = _this.createNote.bind(_this);
+        _this.updateNote = _this.updateNote.bind(_this);
+        _this.removeNote = _this.removeNote.bind(_this);
+        _this.updateForm = _this.updateForm.bind(_this);
         _this.state = {
             listNotes: new _listNotes2.default(_this.updatePage)
         };
@@ -18912,13 +18623,23 @@ var Page = function (_React$Component) {
             var props = {
                 className: 'container'
             };
+            var state = this.state,
+                createNote = this.createNote,
+                updateNote = this.updateNote,
+                removeNote = this.removeNote,
+                updateForm = this.updateForm;
+            var notesList = state.notesList;
+
 
             var form = createFormNotes(this.createNote);
-            var section = createSectionNotes(this.state.notesList, this.updateNote, this.removeNote, this.updateForm);
+            var section = createSectionNotes(this.notesList, this.createNote, this.updateNote, this.removeNote, this.updateForm);
 
-            var children = [form, section];
-
-            return _react2.default.createElement(_main2.default, props, children);
+            return _react2.default.createElement(
+                _main2.default,
+                props,
+                form,
+                section
+            );
         }
     }, {
         key: 'updateForm',
@@ -18958,28 +18679,16 @@ var Page = function (_React$Component) {
 
 exports.default = Page;
 
-// export default () => {
-//     const props = {
-//         className = 'container'
-//     }
-
-//     let form = createFormNotes()
-//     let section = createSectionNotes();
-
-//     let children = [form, section]
-
-//     return React.createElement(Main, props, children);
-// }
 
 var createFormNotes = function createFormNotes(createNote) {
     var props = {
-        note: new Nota('', ''),
+        note: new _note2.default(undefined, '', ''),
         updateNote: createNote,
         removeNote: null,
         updateForm: null
     };
 
-    return _react2.default.createElement(_formNotes2.default, propsNote);
+    return _react2.default.createElement(_formNotes2.default, props);
 };
 
 var createSectionNotes = function createSectionNotes() {
@@ -18996,14 +18705,14 @@ var createSectionNotes = function createSectionNotes() {
             updateForm: updateForm
         };
 
-        return _react2.default.createElement(_main2.default, props);
+        return _react2.default.createElement(_sectionNotes2.default, props);
     };
 };
 
 // interactions functions
 
 /***/ }),
-/* 37 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19019,12 +18728,21 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = function () {
-  return _react2.default.createElement('main', props, children);
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+exports.default = function (_ref) {
+  var children = _ref.children,
+      props = _objectWithoutProperties(_ref, ['children']);
+
+  return _react2.default.createElement(
+    'main',
+    props,
+    children
+  );
 };
 
 /***/ }),
-/* 38 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19034,15 +18752,17 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _formNotes = __webpack_require__(18);
+var _formNotes = __webpack_require__(15);
 
 var _formNotes2 = _interopRequireDefault(_formNotes);
 
-var _section = __webpack_require__(20);
+var _section = __webpack_require__(36);
 
 var _section2 = _interopRequireDefault(_section);
 
@@ -19056,13 +18776,20 @@ exports.default = function (_ref) {
 
     var props = {
         className: 'notes'
-    };
 
-    var children = notesList.map(function (note, i) {
+        // const children = listaNotas.pegaTodos().map((notaAtual, posicao) => (
+        //     montaFormNotas(posicao, notaAtual, adicionarNota, removerNota, editarFormulario)
+        // ))
+
+    };var children = notesList.map(function (note, i) {
         return createFormNotes(note, i);
     });
 
-    return _react2.default.createElement(_section2.default, props, children);
+    return _react2.default.createElement(
+        _section2.default,
+        props,
+        children
+    );
 };
 
 var createFormNotes = function createFormNotes(note, position) {
@@ -19075,8 +18802,204 @@ var createFormNotes = function createFormNotes(note, position) {
         updateForm: updateForm
     };
 
-    return _react2.default.createElement(_formNotes2.default, propsNote, children);
+    return _react2.default.createElement(_formNotes2.default, _extends({ key: position }, props));
 };
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (props) {
+  return _react2.default.createElement('input', props);
+};
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (props) {
+  return _react2.default.createElement('textarea', props);
+};
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+exports.default = function (_ref) {
+  var children = _ref.children,
+      props = _objectWithoutProperties(_ref, ['children']);
+
+  return _react2.default.createElement(
+    'button',
+    props,
+    children
+  );
+};
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+exports.default = function (_ref) {
+  var children = _ref.children,
+      props = _objectWithoutProperties(_ref, ['children']);
+
+  return _react2.default.createElement(
+    'form',
+    props,
+    children
+  );
+};
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (props) {
+  return _react2.default.createElement('section', props);
+};
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _note = __webpack_require__(7);
+
+var _note2 = _interopRequireDefault(_note);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ListNotes = function () {
+    function ListNotes(observer) {
+        _classCallCheck(this, ListNotes);
+
+        this._internList = [];
+        this._observer = observer;
+    }
+
+    _createClass(ListNotes, [{
+        key: 'push',
+        value: function push(title, content) {
+            var note = new _note2.default(title, content);
+            this._internList.push(note);
+            this._observer(this);
+        }
+    }, {
+        key: 'splice',
+        value: function splice(id) {
+            this._internList.splice(id, 1);
+            this._observer(this);
+        }
+    }, {
+        key: 'update',
+        value: function update(id) {
+            this._internList[id].editing = true;
+            this._observer(this);
+        }
+    }, {
+        key: 'save',
+        value: function save(id, newTitle, newContent) {
+            this._internList[id].title = newTitle;
+            this._internList[id].content = newContent;
+            this._internList[id].editing = false;
+            this._observer(this);
+        }
+    }, {
+        key: 'get',
+        value: function get(id) {
+            return this._internList[id];
+        }
+    }, {
+        key: 'totalCount',
+        value: function totalCount() {
+            return this._internList.length;
+        }
+    }]);
+
+    return ListNotes;
+}();
+
+exports.default = ListNotes;
 
 /***/ })
 /******/ ]);
