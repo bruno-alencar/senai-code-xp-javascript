@@ -590,17 +590,17 @@ var Note = function () {
     _createClass(Note, [{
         key: "estaCadastrando",
         value: function estaCadastrando() {
-            return this._position === undefined;
+            return this.position === undefined;
         }
     }, {
         key: "estaVisualizando",
         value: function estaVisualizando() {
-            return this._position !== undefined && !this._editing;
+            return this.position !== undefined && !this.editing;
         }
     }, {
         key: "estaAlterando",
         value: function estaAlterando() {
-            return this._position !== undefined && this._editing;
+            return this.position !== undefined && this.editing;
         }
     }, {
         key: "title",
@@ -609,7 +609,8 @@ var Note = function () {
         },
         set: function set(title) {
 
-            title !== null && title.length > 5 ? this._title = title : alert("Title is not valid!");
+            this._title = title;
+            // (title !== null && title.length > 5) ? this._title = title : alert("Title is not valid!");
         }
     }, {
         key: "content",
@@ -617,7 +618,8 @@ var Note = function () {
             return this._content;
         },
         set: function set(content) {
-            content !== null && content.length > 5 ? this._content = content : alert("Content is not valid!");
+            this._content = content;
+            // (content !== null && content.length > 5) ? this._content = content : alert("Content is not valid!");
         }
     }, {
         key: "editing",
@@ -626,6 +628,14 @@ var Note = function () {
         },
         set: function set(status) {
             this._editing = status;
+        }
+    }, {
+        key: "position",
+        get: function get() {
+            return this._position;
+        },
+        set: function set(position) {
+            this._position = position;
         }
     }]);
 
@@ -1022,19 +1032,19 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _formInput = __webpack_require__(32);
+var _formInput = __webpack_require__(31);
 
 var _formInput2 = _interopRequireDefault(_formInput);
 
-var _formTextArea = __webpack_require__(33);
+var _formTextArea = __webpack_require__(32);
 
 var _formTextArea2 = _interopRequireDefault(_formTextArea);
 
-var _formButton = __webpack_require__(34);
+var _formButton = __webpack_require__(33);
 
 var _formButton2 = _interopRequireDefault(_formButton);
 
-var _form = __webpack_require__(35);
+var _form = __webpack_require__(34);
 
 var _form2 = _interopRequireDefault(_form);
 
@@ -1045,8 +1055,8 @@ var _note2 = _interopRequireDefault(_note);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (_ref) {
-    var position = _ref.position,
-        note = _ref.note,
+    var note = _ref.note,
+        createNote = _ref.createNote,
         updateNote = _ref.updateNote,
         removeNote = _ref.removeNote,
         updateForm = _ref.updateForm;
@@ -1057,23 +1067,18 @@ exports.default = function (_ref) {
 
     var inputTitle = createInputTitle(newNote);
     var textArea = createTextArea(newNote);
-    var button = createButton(newNote, position);
-
-    if (newNote.editing) {
-        children = [inputTitle, textArea, button];
-        action = function action() {};
-    } else {
-        children = [button, inputTitle, textArea];
-        action = function action() {
-            return updateForm(position);
-        };
-    }
+    var button = createButton(newNote, removeNote);
+    var buttonConcluir = montaButtonConcluir(newNote, createNote);
 
     var props = {
-        id: 'note-' + position,
-        className: 'note',
-        onClick: action
+        className: 'note'
     };
+
+    if (newNote.estaVisualizando()) {
+        props.onClick = function () {
+            return updateForm(newNote.posicao);
+        };
+    }
 
     return _react2.default.createElement(
         _form2.default,
@@ -1081,7 +1086,7 @@ exports.default = function (_ref) {
         newNote.estaAlterando() && button,
         inputTitle,
         textArea,
-        (newNote.estaCadastrando() || newNote.estaAlterando()) && button
+        (newNote.estaCadastrando() || newNote.estaAlterando()) && buttonConcluir
     );
 };
 
@@ -1092,11 +1097,14 @@ var createInputTitle = function createInputTitle(newNote) {
         name: 'titulo',
         placeholder: 'Título',
         defaultValue: newNote.title,
-        readOnly: !newNote.editing,
         onChange: function onChange(e) {
             return newNote.title = e.target.value;
         }
     };
+
+    if (newNote.estaVisualizando()) {
+        props.readOnly = true;
+    }
 
     return _react2.default.createElement(_formInput2.default, props);
 };
@@ -1113,34 +1121,22 @@ var createTextArea = function createTextArea(newNote) {
         }
     };
 
+    if (newNote.estaVisualizando()) props.readOnly = true;
+
     return _react2.default.createElement(_formTextArea2.default, props);
 };
 
-var createButton = function createButton(newNote) {
-
-    var children = void 0;
-    var action = void 0;
-
-    if (newNote.editing) {
-        children = 'Alterar';
-        action = function action(e) {
-            return updateNote(newNote.position, newNote.title, newNote.content);
-        };
-    } else {
-        children = _react2.default.createElement('i', {
-            className: 'fa fa-times',
-            'aria-hidden': true
-        });
-        action = function action(e) {
-            return removeNote(e, newNote.position);
-        };
-    }
+var createButton = function createButton(newNote, removeNote) {
 
     var props = {
         className: 'note__control',
         type: 'button',
-        onClick: action
+        onClick: function onClick(event) {
+            event.stopPropagation();
+            removeNote(event, newNote.posicao);
+        }
     };
+    var children = _react2.default.createElement('i', { className: 'fa fa-times', 'aria-hidden': true });
 
     return _react2.default.createElement(
         _formButton2.default,
@@ -1149,63 +1145,25 @@ var createButton = function createButton(newNote) {
     );
 };
 
-// function FormNotes(props) {
+function montaButtonConcluir(newNote, createNote) {
 
-//     let inputTitle = createTitle(props.note);
-//     let textArea = createTextArea(props.note);
+    var props = {
+        className: 'note__control',
+        type: 'button',
+        onClick: function onClick(event) {
+            createNote(newNote.position, newNote.title, newNote.content);
+            event.target.form.reset();
+        }
+    };
 
-//     let child = props.note.editing == true ? 'Alterar' :  '<i class="fa fa-times" aria-hidden="true"></i>';
-//     let button = createButton(props.note, props.position, child, inputTitle, textArea);
+    var children = 'Concluído';
 
-//     let children = props.note.editing == true ? [inputTitle, textArea, button] : [button, inputTitle, textArea];
-
-//     let propsForm = {
-//         id: `note-${props.position}`,
-//         className: 'note',
-//         onClick: props.note.editing == true ? () => { } : () => updateForm(props.position),
-//         // children: children
-//     }
-
-//     return new Form(propsForm, children);
-// }
-
-// const createTitle = note => {
-//     const props = {
-//         className: 'note__title',
-//         type: 'text',
-//         name: 'titulo',
-//         placeholder: 'Título',
-//         value:  note.title,
-//         readonly: !note.editing
-//     };
-
-//     return new FormInput(props);
-// }
-
-// const createButton = (note, position, children, inputTitle, textArea) => {
-
-//     const props = {
-//         className: 'note__control',
-//         type: 'button',
-//         // children: children,
-//         onClick: note.editing == true ? e => updateNote(position, inputTitle, textArea) : e => removeNote(e, position)
-//     };
-//     return new FormButton(props, children);
-// }
-
-// const createTextArea = note => {
-//     const props = {
-//         className: 'note__body',
-//         name: 'texto',
-//         rows: 5,
-//         placeholder: 'Criar uma nota...',
-//         // value:  note.content
-//     };
-
-//     return new FormTextArea(props, note.content);
-// }
-
-// export default FormNotes;
+    return _react2.default.createElement(
+        _formButton2.default,
+        props,
+        children
+    );
+}
 
 /***/ }),
 /* 16 */
@@ -18555,11 +18513,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _main = __webpack_require__(30);
-
-var _main2 = _interopRequireDefault(_main);
-
-var _sectionNotes = __webpack_require__(31);
+var _sectionNotes = __webpack_require__(30);
 
 var _sectionNotes2 = _interopRequireDefault(_sectionNotes);
 
@@ -18571,7 +18525,7 @@ var _note = __webpack_require__(7);
 
 var _note2 = _interopRequireDefault(_note);
 
-var _listNotes = __webpack_require__(37);
+var _listNotes = __webpack_require__(36);
 
 var _listNotes2 = _interopRequireDefault(_listNotes);
 
@@ -18583,18 +18537,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// const observerList = () => {
-//     updateSection(section);
-// };
-// const notesList = new ListNotes(observerList);
-
 var Page = function (_React$Component) {
     _inherits(Page, _React$Component);
 
     function Page(props) {
         _classCallCheck(this, Page);
 
-        // this.updatePage = this.updatePage.bind()
         var _this = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this, props));
 
         _this.updatePage = _this.updatePage.bind(_this);
@@ -18602,44 +18550,16 @@ var Page = function (_React$Component) {
         _this.updateNote = _this.updateNote.bind(_this);
         _this.removeNote = _this.removeNote.bind(_this);
         _this.updateForm = _this.updateForm.bind(_this);
-        _this.state = {
-            listNotes: new _listNotes2.default(_this.updatePage)
-        };
+        _this.state = { notesList: new _listNotes2.default(_this.updatePage) };
         return _this;
     }
 
     _createClass(Page, [{
         key: 'updatePage',
         value: function updatePage(newNotesList) {
-            console.log('quem é this', this);
-
             this.setState({
-                listNotes: newNotesList
+                notesList: newNotesList
             });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var props = {
-                className: 'container'
-            };
-            var state = this.state,
-                createNote = this.createNote,
-                updateNote = this.updateNote,
-                removeNote = this.removeNote,
-                updateForm = this.updateForm;
-            var notesList = state.notesList;
-
-
-            var form = createFormNotes(this.createNote);
-            var section = createSectionNotes(this.notesList, this.createNote, this.updateNote, this.removeNote, this.updateForm);
-
-            return _react2.default.createElement(
-                _main2.default,
-                props,
-                form,
-                section
-            );
         }
     }, {
         key: 'updateForm',
@@ -18648,14 +18568,15 @@ var Page = function (_React$Component) {
         }
     }, {
         key: 'createNote',
-        value: function createNote(title, content, form) {
-            this.state.notesList.push(title.value, content.value);
-            form.reset();
+        value: function createNote(position, title, content) {
+            if (this.state.notesList.get(position)) updateNote(position, title, content);else this.state.notesList.push(title, content);
+
+            // form.reset();
         }
     }, {
         key: 'updateNote',
         value: function updateNote(id, newTitle, newContent) {
-            this.state.notesList.save(id, newTitle.value, newContent.value);
+            this.state.notesList.save(id, newTitle, newContent);
         }
     }, {
         key: 'removeNote',
@@ -18672,77 +18593,65 @@ var Page = function (_React$Component) {
                 }, 300);
             }, millisecondsToWait);
         }
+    }, {
+        key: 'render',
+        value: function render() {
+            var props = {
+                className: 'container'
+            };
+            var state = this.state,
+                createNote = this.createNote,
+                updateNote = this.updateNote,
+                removeNote = this.removeNote,
+                updateForm = this.updateForm;
+            var notesList = state.notesList;
+
+
+            var form = createFormNotes(createNote, updateNote, removeNote, updateForm);
+            var section = createSectionNotes(notesList, createNote, updateNote, removeNote, updateForm);
+
+            return _react2.default.createElement(
+                'main',
+                props,
+                form,
+                section
+            );
+        }
     }]);
 
     return Page;
 }(_react2.default.Component);
 
-exports.default = Page;
-
-
-var createFormNotes = function createFormNotes(createNote) {
+function createFormNotes(createNote, updateNote, removeNote, updateForm) {
     var props = {
         note: new _note2.default(undefined, '', ''),
-        updateNote: createNote,
-        removeNote: null,
-        updateForm: null
+        createNote: createNote,
+        updateNote: updateNote,
+        removeNote: removeNote,
+        updateForm: updateForm
     };
 
     return _react2.default.createElement(_formNotes2.default, props);
-};
+}
 
-var createSectionNotes = function createSectionNotes() {
-    return function (_ref) {
-        var notesList = _ref.notesList,
-            updateNote = _ref.updateNote,
-            removeNote = _ref.removeNote,
-            updateForm = _ref.updateForm;
-
-        var props = {
-            notesList: notesList,
-            updateNote: updateNote,
-            removeNote: removeNote,
-            updateForm: updateForm
-        };
-
-        return _react2.default.createElement(_sectionNotes2.default, props);
+function createSectionNotes(notesList, createNote, updateNote, removeNote, updateForm) {
+    var props = {
+        notesList: notesList,
+        createNote: createNote,
+        updateNote: updateNote,
+        removeNote: removeNote,
+        updateForm: updateForm
     };
-};
+
+    return _react2.default.createElement(_sectionNotes2.default, props);
+}
+
+exports.default = Page;
 
 // interactions functions
 
 /***/ }),
 /* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-exports.default = function (_ref) {
-  var children = _ref.children,
-      props = _objectWithoutProperties(_ref, ['children']);
-
-  return _react2.default.createElement(
-    'main',
-    props,
-    children
-  );
-};
-
-/***/ }),
-/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18762,7 +18671,7 @@ var _formNotes = __webpack_require__(15);
 
 var _formNotes2 = _interopRequireDefault(_formNotes);
 
-var _section = __webpack_require__(36);
+var _section = __webpack_require__(35);
 
 var _section2 = _interopRequireDefault(_section);
 
@@ -18770,19 +18679,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = function (_ref) {
     var notesList = _ref.notesList,
+        createNote = _ref.createNote,
         updateNote = _ref.updateNote,
         removeNote = _ref.removeNote,
         updateForm = _ref.updateForm;
 
     var props = {
         className: 'notes'
+    };
 
-        // const children = listaNotas.pegaTodos().map((notaAtual, posicao) => (
-        //     montaFormNotas(posicao, notaAtual, adicionarNota, removerNota, editarFormulario)
-        // ))
-
-    };var children = notesList.map(function (note, i) {
-        return createFormNotes(note, i);
+    var children = notesList.getAll().map(function (note, i) {
+        return createFormNotes(note, i, createNote, updateNote, removeNote, updateForm);
     });
 
     return _react2.default.createElement(
@@ -18792,21 +18699,21 @@ exports.default = function (_ref) {
     );
 };
 
-var createFormNotes = function createFormNotes(note, position) {
+function createFormNotes(note, position, createNote, updateNote, removeNote, updateForm) {
 
     var props = {
         note: note,
-        position: position,
+        createNote: createNote,
         updateNote: updateNote,
         removeNote: removeNote,
         updateForm: updateForm
     };
 
     return _react2.default.createElement(_formNotes2.default, _extends({ key: position }, props));
-};
+}
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18827,7 +18734,7 @@ exports.default = function (props) {
 };
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18848,7 +18755,7 @@ exports.default = function (props) {
 };
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18878,7 +18785,7 @@ exports.default = function (_ref) {
 };
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18908,7 +18815,7 @@ exports.default = function (_ref) {
 };
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18929,7 +18836,7 @@ exports.default = function (props) {
 };
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18960,7 +18867,7 @@ var ListNotes = function () {
     _createClass(ListNotes, [{
         key: 'push',
         value: function push(title, content) {
-            var note = new _note2.default(title, content);
+            var note = new _note2.default(undefined, title, content);
             this._internList.push(note);
             this._observer(this);
         }
@@ -18993,6 +18900,11 @@ var ListNotes = function () {
         key: 'totalCount',
         value: function totalCount() {
             return this._internList.length;
+        }
+    }, {
+        key: 'getAll',
+        value: function getAll() {
+            return this._internList;
         }
     }]);
 

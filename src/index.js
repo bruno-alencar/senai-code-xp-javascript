@@ -3,6 +3,6 @@ import ReactDOM from 'react-dom'
 import Page from './components/page.js'
 
 ReactDOM.render(
-    React.createElement(Page, null),
+    <Page />,
     document.getElementById('root')
 )

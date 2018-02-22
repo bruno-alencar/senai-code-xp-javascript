@@ -7,7 +7,7 @@ class ListNotes {
     }
 
     push(title, content) {
-        let note = new Note(title, content);
+        let note = new Note(undefined, title, content);
         this._internList.push(note);
         this._observer(this);
     }
@@ -35,6 +35,10 @@ class ListNotes {
 
     totalCount() {
         return this._internList.length;
+    }
+
+    getAll() {
+        return this._internList;
     }
 }
 

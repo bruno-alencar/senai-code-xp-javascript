@@ -12,7 +12,8 @@ class Note {
 
     set title(title) {
 
-        (title !== null && title.length > 5) ? this._title = title : alert("Title is not valid!");
+        this._title = title;
+        // (title !== null && title.length > 5) ? this._title = title : alert("Title is not valid!");
     }
 
     get content() {
@@ -20,7 +21,8 @@ class Note {
     }
 
     set content(content) {
-        (content !== null && content.length > 5) ? this._content = content : alert("Content is not valid!");
+        this._content =content;
+        // (content !== null && content.length > 5) ? this._content = content : alert("Content is not valid!");
     }
 
     get editing() {
@@ -31,16 +33,24 @@ class Note {
         this._editing = status;
     }
 
+    get position() {
+        return this._position;
+    }
+    
+    set position(position) {
+        this._position = position;
+    }
+
     estaCadastrando() {
-        return this._position === undefined;
+        return this.position === undefined;
     }
 
     estaVisualizando() {
-        return this._position !== undefined && !this._editing
+        return this.position !== undefined && !this.editing
     }
 
     estaAlterando() {
-        return this._position !== undefined && this._editing
+        return this.position !== undefined && this.editing
     }
 }
 
