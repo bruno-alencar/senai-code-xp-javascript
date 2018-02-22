@@ -4,6 +4,7 @@ import Section from './section.js'
 
 export default ({
     notesList,
+    createNote,
     updateNote,
     removeNote,
     updateForm
@@ -12,24 +13,22 @@ export default ({
         className: 'notes'
     }
 
-    // const children = listaNotas.pegaTodos().map((notaAtual, posicao) => (
-    //     montaFormNotas(posicao, notaAtual, adicionarNota, removerNota, editarFormulario)
-    // ))
-
-    let children = notesList.map((note, i) => createFormNotes(note, i));
-
+    const children = notesList.getAll().map((note, i) => (
+            createFormNotes(note, i, createNote, updateNote, removeNote, updateForm)
+            ))
+    
     return <Section {...props}>{children}</Section>
 }
 
-const createFormNotes = (note, position) => {
+function createFormNotes(note, position, createNote, updateNote, removeNote, updateForm) {
 
     const props = {
-        note: note,
-        position: position,
-        updateNote: updateNote,
-        removeNote: removeNote,
-        updateForm: updateForm
+        note,
+        createNote,
+        updateNote,
+        removeNote,
+        updateForm
     };
-
+    
     return <FormNotes key={position} {...props} />
 }
