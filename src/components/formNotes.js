@@ -15,8 +15,6 @@ export default ({note, createNote, updateNote, removeNote, updateForm}) => {
     let button = createButton(newNote, removeNote);
     let buttonConcluir = montaButtonConcluir(newNote, createNote)
 
-    console.log(newNote.position)
-
     const props = {
         className: `note`
     }
