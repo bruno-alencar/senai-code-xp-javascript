@@ -28,11 +28,9 @@ class Page extends React.Component {
 
     createNote(position, title, content) {
         if(this.state.notesList.get(position))
-            updateNote(position, title, content);
+            this.updateNote(position, title, content);
         else
             this.state.notesList.push(title, content);
-
-        // form.reset();
     }
 
     updateNote(id, newTitle, newContent) {

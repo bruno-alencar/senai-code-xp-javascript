@@ -28,7 +28,7 @@ class Note {
     get editing() {
         return this._editing;
     }
-    
+
     set editing(status) {
         this._editing = status;
     }
@@ -36,7 +36,7 @@ class Note {
     get position() {
         return this._position;
     }
-    
+
     set position(position) {
         this._position = position;
     }

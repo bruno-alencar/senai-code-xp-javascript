@@ -7,30 +7,52 @@ class ListNotes {
     }
 
     push(title, content) {
-        let note = new Note(undefined, title, content);
-        this._internList.push(note);
+        // let note = new Note(undefined, title, content);
+        // this._internList.push(note);
+
+        let note = new Note(this._internList.length, title, content)
+        this._internList = this._internList.concat(note)
         this._observer(this);
     }
 
-    splice(id) {
-        this._internList.splice(id, 1);
+    splice(position) {
+        // this._internList.splice(position, 1);
+
+        this._internList = this._internList.filter(note => note.position !== position)
         this._observer(this);
     }
 
-    update(id) {
-        this._internList[id].editing = true;
+    update(position) {
+        // this._internList[position].editing = true;
+
+        this._internList = this._internList.map(note => {
+            if (note.position === position) {
+                return new Note(position, note.title, note.content, true)
+            } else {
+                return note
+            }
+        })
+
         this._observer(this);
     }
 
-    save(id, newTitle, newContent) {
-        this._internList[id].title = newTitle;
-        this._internList[id].content = newContent;
-        this._internList[id].editing = false;
+    save(position, newTitle, newContent) {
+        // this._internList[position].title = newTitle;
+        // this._internList[position].content = newContent;
+        // this._internList[position].editing = false;
+        
+        this._internList = this._internList.map(note => {
+            if (note.position === position) {
+                return new Note(position, newTitle, newContent, false)
+            } else {
+                return note
+            }
+        })
         this._observer(this);
     }
 
-    get(id) {
-        return this._internList[id];
+    get(position) {
+        return this._internList[position];
     }
 
     totalCount() {
