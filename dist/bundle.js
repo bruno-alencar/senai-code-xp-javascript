@@ -1076,7 +1076,7 @@ exports.default = function (_ref) {
 
     if (newNote.estaVisualizando()) {
         props.onClick = function () {
-            return updateForm(newNote.posicao);
+            return updateForm(newNote.position);
         };
     }
 
@@ -1133,7 +1133,7 @@ var createButton = function createButton(newNote, removeNote) {
         type: 'button',
         onClick: function onClick(event) {
             event.stopPropagation();
-            removeNote(event, newNote.posicao);
+            removeNote(event, newNote.position);
         }
     };
     var children = _react2.default.createElement('i', { className: 'fa fa-times', 'aria-hidden': true });
@@ -18569,9 +18569,7 @@ var Page = function (_React$Component) {
     }, {
         key: 'createNote',
         value: function createNote(position, title, content) {
-            if (this.state.notesList.get(position)) updateNote(position, title, content);else this.state.notesList.push(title, content);
-
-            // form.reset();
+            if (this.state.notesList.get(position)) this.updateNote(position, title, content);else this.state.notesList.push(title, content);
         }
     }, {
         key: 'updateNote',
@@ -18867,34 +18865,58 @@ var ListNotes = function () {
     _createClass(ListNotes, [{
         key: 'push',
         value: function push(title, content) {
-            var note = new _note2.default(undefined, title, content);
-            this._internList.push(note);
+            // let note = new Note(undefined, title, content);
+            // this._internList.push(note);
+
+            var note = new _note2.default(this._internList.length, title, content);
+            this._internList = this._internList.concat(note);
             this._observer(this);
         }
     }, {
         key: 'splice',
-        value: function splice(id) {
-            this._internList.splice(id, 1);
+        value: function splice(position) {
+            // this._internList.splice(position, 1);
+
+            this._internList = this._internList.filter(function (note) {
+                return note.position !== position;
+            });
             this._observer(this);
         }
     }, {
         key: 'update',
-        value: function update(id) {
-            this._internList[id].editing = true;
+        value: function update(position) {
+            // this._internList[position].editing = true;
+
+            this._internList = this._internList.map(function (note) {
+                if (note.position === position) {
+                    return new _note2.default(position, note.title, note.content, true);
+                } else {
+                    return note;
+                }
+            });
+
             this._observer(this);
         }
     }, {
         key: 'save',
-        value: function save(id, newTitle, newContent) {
-            this._internList[id].title = newTitle;
-            this._internList[id].content = newContent;
-            this._internList[id].editing = false;
+        value: function save(position, newTitle, newContent) {
+            // this._internList[position].title = newTitle;
+            // this._internList[position].content = newContent;
+            // this._internList[position].editing = false;
+
+            this._internList = this._internList.map(function (note) {
+                if (note.position === position) {
+                    return new _note2.default(position, newTitle, newContent, false);
+                } else {
+                    return note;
+                }
+            });
             this._observer(this);
         }
     }, {
         key: 'get',
-        value: function get(id) {
-            return this._internList[id];
+        value: function get(position) {
+            return this._internList[position];
         }
     }, {
         key: 'totalCount',
