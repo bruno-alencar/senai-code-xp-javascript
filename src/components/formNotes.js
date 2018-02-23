@@ -20,7 +20,7 @@ export default ({note, createNote, updateNote, removeNote, updateForm}) => {
     }
 
     if (newNote.estaVisualizando()) {
-        props.onClick = () => updateForm(newNote.posicao)
+        props.onClick = () => updateForm(newNote.position)
     }
   
     return (<Form {...props}> 
@@ -72,7 +72,7 @@ const createButton = (newNote, removeNote) => {
         type: 'button',
         onClick: event => {
             event.stopPropagation()
-            removeNote(event, newNote.posicao)
+            removeNote(event, newNote.position)
         }
     };
     const children = <i className='fa fa-times' aria-hidden={true} />
